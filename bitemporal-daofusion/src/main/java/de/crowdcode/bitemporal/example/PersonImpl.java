@@ -58,11 +58,11 @@ public class PersonImpl extends OidBasedMutablePersistentEntity implements Perso
 	@OneToMany(fetch = FetchType.LAZY)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "person")
-	private final Collection<BitemporalAdresseImpl> adressen = new LinkedList<BitemporalAdresseImpl>();
+	private final Collection<BitemporalAdresseImpl> bitemporalAdressen = new LinkedList<BitemporalAdresseImpl>();
 
 	// Use this method for accessing bitemporal trace of Adressen values
 	public WrappedBitemporalProperty<Adresse, BitemporalAdresseImpl> getBitemporalAdressen() {
-		return new WrappedBitemporalProperty<Adresse, BitemporalAdresseImpl>(adressen,
+		return new WrappedBitemporalProperty<Adresse, BitemporalAdresseImpl>(bitemporalAdressen,
 				new WrappedValueAccessor<Adresse, BitemporalAdresseImpl>() {
 
 					private static final long serialVersionUID = -3548772720386675459L;
