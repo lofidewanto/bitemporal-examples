@@ -11,12 +11,78 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.version>4.10</junit.version>
-        <kissmda.maven.plugin.version>1.0.0</kissmda.maven.plugin.version>
-        <kissmda.cartridges.simple.java.version>1.0.0</kissmda.cartridges.simple.java.version>
+		<kissmda.maven.plugin.version>1.0.0</kissmda.maven.plugin.version>
+		<kissmda.cartridges.simple.java.version>1.0.0</kissmda.cartridges.simple.java.version>
+		<daofusion.version>1.2.0</daofusion.version>
+		<hibernate-core.version>3.3.2.GA</hibernate-core.version>
+		<hibernate-entitymanager.version>3.4.0.GA</hibernate-entitymanager.version>
+		<c3p0.version>0.9.1.2</c3p0.version>
+		<h2.version>1.1.115</h2.version>
+		<slf4j.version>1.5.8</slf4j.version>
 	</properties>
 
 	<!-- Dependencies -->
 	<dependencies>
+		<!-- DAO Fusion stuff -->
+		<dependency>
+			<groupId>com.anasoft.os</groupId>
+			<artifactId>daofusion-core</artifactId>
+			<version>${daofusion.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.anasoft.os</groupId>
+			<artifactId>daofusion-core</artifactId>
+			<version>${daofusion.version}</version>
+			<classifier>sources</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.anasoft.os</groupId>
+			<artifactId>daofusion-test</artifactId>
+			<version>${daofusion.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate-entitymanager.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Basic stuff -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${c3p0.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
