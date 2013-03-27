@@ -115,8 +115,9 @@
 			<groupId>com.anasoft.os</groupId>
 			<artifactId>daofusion-test</artifactId>
 			<version>${daofusion.version}</version>
-			<scope>test</scope>
 		</dependency>
+		
+		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
