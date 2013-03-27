@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.1.xsd
+                http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<context:component-scan base-package="de.crowdcode.bitemporal.example" />
+
+	<context:spring-configured />
+
+	<tx:annotation-driven transaction-manager="transactionManager"
+		mode="aspectj" />
+
+	<jpa:repositories base-package="de.extrastandard.persistence.repository" />
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="jpaDialect">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+		</property>
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dbcpDataSource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl"
+					value="${plugins.execution.executionPersistenceJpa.hibernate.generateDdl}" />
+				<property name="database"
+					value="${plugins.execution.executionPersistenceJpa.hibernate.database}" />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- DataSource & Pool -->
+	<bean id="dbcpDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName"
+			value="${plugins.execution.executionPersistenceJpa.database.driver_class}" />
+		<property name="url"
+			value="${plugins.execution.executionPersistenceJpa.database.connect_url}" />
+		<property name="username"
+			value="${plugins.execution.executionPersistenceJpa.database.username}" />
+		<property name="password"
+			value="${plugins.execution.executionPersistenceJpa.database.password}" />
+		<property name="maxIdle"
+			value="${plugins.execution.executionPersistenceJpa.db.pool.maxIdle}" />
+		<property name="maxActive"
+			value="${plugins.execution.executionPersistenceJpa.db.pool.maxActive}" />
+		<property name="maxWait"
+			value="${plugins.execution.executionPersistenceJpa.db.pool.maxWait}" />
+		<property name="validationQuery"
+			value="${plugins.execution.executionPersistenceJpa.db.pool.validationQuery}" />
+		<property name="testOnBorrow"
+			value="${plugins.execution.executionPersistenceJpa.db.pool.testOnBorrow}" />
+		<property name="testWhileIdle"
+			value="${plugins.execution.executionPersistenceJpa.db.pool.testWhileIdle}" />
+		<property name="timeBetweenEvictionRunsMillis"
+			value="${plugins.execution.executionPersistenceJpa.db.pool.timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis"
+			value="${plugins.execution.executionPersistenceJpa.db.pool.minEvictableIdleTimeMillis}" />
+		<property name="numTestsPerEvictionRun"
+			value="${plugins.execution.executionPersistenceJpa.db.pool.numTestsPerEvictionRun}" />
+		<property name="defaultAutoCommit"
+			value="${plugins.execution.executionPersistenceJpa.db.pool.defaultAutoCommit}" />
+	</bean>
+
+</beans>
