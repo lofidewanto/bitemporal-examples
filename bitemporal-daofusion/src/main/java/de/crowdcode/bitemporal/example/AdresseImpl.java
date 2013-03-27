@@ -18,6 +18,12 @@
  */
 package de.crowdcode.bitemporal.example;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import com.anasoft.os.daofusion.test.example.entity.OidBasedMutablePersistentEntity;
 
 /**
@@ -27,55 +33,62 @@ import com.anasoft.os.daofusion.test.example.entity.OidBasedMutablePersistentEnt
  * @since 1.0.0
  * @version 1.0.0
  */
+@Entity
+@Table(name = "adresse")
 public class AdresseImpl extends OidBasedMutablePersistentEntity implements Adresse {
 
 	private static final long serialVersionUID = -9005004076768341870L;
 
+	@Column
+	private String strasse;
+
+	@Column
+	private String plz;
+
+	@Column
+	private String stadt;
+
+	@ManyToOne
+	@JoinColumn(nullable = false, updatable = false)
+	private Person person;
+
 	@Override
 	public String getStrasse() {
-		// TODO Auto-generated method stub
-		return null;
+		return strasse;
 	}
 
 	@Override
 	public void setStrasse(String strasse) {
-		// TODO Auto-generated method stub
-
+		this.strasse = strasse;
 	}
 
 	@Override
 	public Person getPerson() {
-		// TODO Auto-generated method stub
-		return null;
+		return person;
 	}
 
 	@Override
 	public void setPerson(Person person) {
-		// TODO Auto-generated method stub
-
+		this.person = person;
 	}
 
 	@Override
 	public String getStadt() {
-		// TODO Auto-generated method stub
-		return null;
+		return stadt;
 	}
 
 	@Override
 	public void setStadt(String stadt) {
-		// TODO Auto-generated method stub
-
+		this.stadt = stadt;
 	}
 
 	@Override
 	public String getPlz() {
-		// TODO Auto-generated method stub
-		return null;
+		return plz;
 	}
 
 	@Override
 	public void setPlz(String plz) {
-		// TODO Auto-generated method stub
-
+		this.plz = plz;
 	}
 }

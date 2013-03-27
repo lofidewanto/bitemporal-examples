@@ -18,6 +18,11 @@
  */
 package de.crowdcode.bitemporal.example;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.joda.time.Interval;
 
 import com.anasoft.os.daofusion.bitemporal.Bitemporal;
@@ -30,37 +35,44 @@ import com.anasoft.os.daofusion.bitemporal.BitemporalWrapper;
  * @since 1.0.0
  * @version 1.0.0
  */
+@Entity
+@Table(name = "bitemp_adr")
 public class BitemporalAdresseImpl extends BitemporalWrapper<Adresse> implements BitemporalAdresse {
 
 	private static final long serialVersionUID = -3045504986806681059L;
 
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	private Adresse value;
+
+	protected BitemporalAdresseImpl() {
+	}
+
+	public BitemporalAdresseImpl(Adresse value, Interval validityInterval) {
+		super(value, validityInterval);
+	}
+
 	@Override
 	public Adresse getAdresse() {
-		// TODO Auto-generated method stub
-		return null;
+		return value;
 	}
 
 	@Override
 	public void setAdresse(Adresse adresse) {
-		// TODO Auto-generated method stub
-
+		this.value = adresse;
 	}
 
 	@Override
 	protected void setValue(Adresse value) {
-		// TODO Auto-generated method stub
-
+		this.value = value;
 	}
 
 	@Override
 	public Adresse getValue() {
-		// TODO Auto-generated method stub
-		return null;
+		return value;
 	}
 
 	@Override
 	public Bitemporal copyWith(Interval validityInterval) {
-		// TODO Auto-generated method stub
-		return null;
+		return new BitemporalAdresseImpl(value, validityInterval);
 	}
 }

@@ -19,11 +19,21 @@
 package de.crowdcode.bitemporal.example;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.joda.time.Interval;
+
+import com.anasoft.os.daofusion.bitemporal.WrappedBitemporalProperty;
+import com.anasoft.os.daofusion.bitemporal.WrappedValueAccessor;
 import com.anasoft.os.daofusion.test.example.entity.OidBasedMutablePersistentEntity;
 
 /**
@@ -39,11 +49,30 @@ public class PersonImpl extends OidBasedMutablePersistentEntity implements Perso
 
 	private static final long serialVersionUID = -7110031754812700550L;
 
-	@Column(nullable = false, updatable = false)
+	@Column
 	private String vorname;
 
-	@Column(nullable = false, updatable = false)
+	@Column
 	private String nachname;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	@JoinColumn(name = "person")
+	private final Collection<BitemporalAdresseImpl> adressen = new LinkedList<BitemporalAdresseImpl>();
+
+	// Use this method for accessing bitemporal trace of Adressen values
+	public WrappedBitemporalProperty<Adresse, BitemporalAdresseImpl> getBitemporalAdressen() {
+		return new WrappedBitemporalProperty<Adresse, BitemporalAdresseImpl>(adressen,
+				new WrappedValueAccessor<Adresse, BitemporalAdresseImpl>() {
+
+					private static final long serialVersionUID = -3548772720386675459L;
+
+					@Override
+					public BitemporalAdresseImpl wrapValue(Adresse value, Interval validityInterval) {
+						return new BitemporalAdresseImpl(value, validityInterval);
+					}
+				});
+	}
 
 	@Override
 	public String getVorname() {
