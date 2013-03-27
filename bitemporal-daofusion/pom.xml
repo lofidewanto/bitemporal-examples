@@ -19,10 +19,84 @@
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<h2.version>1.1.115</h2.version>
 		<slf4j.version>1.5.8</slf4j.version>
+		<org.springframework.version>3.1.1.RELEASE</org.springframework.version>
+		<org.springframework.aspects.version>3.1.1.RELEASE</org.springframework.aspects.version>
+		<org.springframework.data.jpa.version>1.1.0.RELEASE</org.springframework.data.jpa.version>
+		<org.springframework.ws.version>2.1.0.RELEASE</org.springframework.ws.version>
+		<javax.enterprise.cdi-api.version>1.0</javax.enterprise.cdi-api.version>
+		<org.aspectj.aspectjrt.version>1.6.11</org.aspectj.aspectjrt.version>
+		<org.aspectj.aspectjweaver.version>1.6.4</org.aspectj.aspectjweaver.version>
+		<org.mockito-core.version>1.9.5-rc1</org.mockito-core.version>
 	</properties>
 
 	<!-- Dependencies -->
 	<dependencies>
+		<!-- Spring/DI -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${org.springframework.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${org.springframework.data.jpa.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${org.springframework.aspects.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>${javax.enterprise.cdi-api.version}</version>
+		</dependency>
+
+		<!-- Aspects -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj.aspectjrt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${org.aspectj.aspectjweaver.version}</version>
+		</dependency>
+
 		<!-- DAO Fusion stuff -->
 		<dependency>
 			<groupId>com.anasoft.os</groupId>
@@ -92,6 +166,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${org.mockito-core.version}</version>
 			<scope>test</scope>
 		</dependency>
 
