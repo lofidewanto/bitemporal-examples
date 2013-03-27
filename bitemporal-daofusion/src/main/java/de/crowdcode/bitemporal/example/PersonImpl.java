@@ -86,13 +86,13 @@ public class PersonImpl extends OidBasedMutablePersistentEntity implements Perso
 
 	@Override
 	public Collection<Adresse> getAdressen() {
-		// TODO Auto-generated method stub
+		// TODO Adresse getter
 		return null;
 	}
 
 	@Override
 	public void addAdressen(Adresse adress) {
-		// TODO Auto-generated method stub
+		// TODO Adresse adder
 	}
 
 	@Override
