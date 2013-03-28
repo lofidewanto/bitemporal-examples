@@ -41,7 +41,7 @@ public class BitemporalAdresseImpl extends BitemporalWrapper<Adresse> implements
 
 	private static final long serialVersionUID = -3045504986806681059L;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToOne(targetEntity = AdresseImpl.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private Adresse value;
 
 	protected BitemporalAdresseImpl() {

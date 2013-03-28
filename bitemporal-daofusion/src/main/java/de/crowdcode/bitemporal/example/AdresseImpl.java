@@ -48,7 +48,7 @@ public class AdresseImpl extends OidBasedMutablePersistentEntity implements Adre
 	@Column
 	private String stadt;
 
-	@ManyToOne
+	@ManyToOne(targetEntity = PersonImpl.class)
 	@JoinColumn(nullable = false, updatable = false)
 	private Person person;
 
