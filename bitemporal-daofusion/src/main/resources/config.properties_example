@@ -1,0 +1,10 @@
+# Database
+db.driverClassName=org.hsqldb.jdbcDriver
+db.url=jdbc:hsqldb:mem:db
+db.username=sa
+db.password=
+
+# Hibernate
+hibernate.hbm2ddl.auto=auto
+hibernate.dialect=org.hibernate.dialect.H2Dialect
+hibernate.show_sql=true

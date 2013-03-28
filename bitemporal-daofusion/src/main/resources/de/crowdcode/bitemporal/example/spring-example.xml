@@ -10,65 +10,38 @@
                 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<context:component-scan base-package="de.crowdcode.bitemporal.example" />
-
 	<context:spring-configured />
 
-	<tx:annotation-driven transaction-manager="transactionManager"
-		mode="aspectj" />
-
+	<tx:annotation-driven transaction-manager="transactionManager" />
 	<jpa:repositories base-package="de.extrastandard.persistence.repository" />
 
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-		<property name="jpaDialect">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
-		</property>
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		p:location="config.properties" />
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" />
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
+		<property name="driverClassName" value="${db.driverClassName}" />
+		<property name="url" value="${db.url}" />
 	</bean>
 
 	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="dataSource" ref="dbcpDataSource" />
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:dataSource-ref="dataSource" p:persistenceUnitName="bitemporal">
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="generateDdl"
-					value="${plugins.execution.executionPersistenceJpa.hibernate.generateDdl}" />
-				<property name="database"
-					value="${plugins.execution.executionPersistenceJpa.hibernate.database}" />
+				<property name="databasePlatform" value="${hibernate.dialect}" />
+				<property name="showSql" value="${hibernate.show_sql}" />
 			</bean>
 		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+			</props>
+		</property>
 	</bean>
-
-	<!-- DataSource & Pool -->
-	<bean id="dbcpDataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName"
-			value="${plugins.execution.executionPersistenceJpa.database.driver_class}" />
-		<property name="url"
-			value="${plugins.execution.executionPersistenceJpa.database.connect_url}" />
-		<property name="username"
-			value="${plugins.execution.executionPersistenceJpa.database.username}" />
-		<property name="password"
-			value="${plugins.execution.executionPersistenceJpa.database.password}" />
-		<property name="maxIdle"
-			value="${plugins.execution.executionPersistenceJpa.db.pool.maxIdle}" />
-		<property name="maxActive"
-			value="${plugins.execution.executionPersistenceJpa.db.pool.maxActive}" />
-		<property name="maxWait"
-			value="${plugins.execution.executionPersistenceJpa.db.pool.maxWait}" />
-		<property name="validationQuery"
-			value="${plugins.execution.executionPersistenceJpa.db.pool.validationQuery}" />
-		<property name="testOnBorrow"
-			value="${plugins.execution.executionPersistenceJpa.db.pool.testOnBorrow}" />
-		<property name="testWhileIdle"
-			value="${plugins.execution.executionPersistenceJpa.db.pool.testWhileIdle}" />
-		<property name="timeBetweenEvictionRunsMillis"
-			value="${plugins.execution.executionPersistenceJpa.db.pool.timeBetweenEvictionRunsMillis}" />
-		<property name="minEvictableIdleTimeMillis"
-			value="${plugins.execution.executionPersistenceJpa.db.pool.minEvictableIdleTimeMillis}" />
-		<property name="numTestsPerEvictionRun"
-			value="${plugins.execution.executionPersistenceJpa.db.pool.numTestsPerEvictionRun}" />
-		<property name="defaultAutoCommit"
-			value="${plugins.execution.executionPersistenceJpa.db.pool.defaultAutoCommit}" />
-	</bean>
-
 </beans>

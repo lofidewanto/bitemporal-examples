@@ -18,7 +18,7 @@
 		<hibernate-entitymanager.version>3.4.0.GA</hibernate-entitymanager.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<h2.version>1.1.115</h2.version>
-		<slf4j.version>1.5.8</slf4j.version>
+		<slf4j.version>1.6.1</slf4j.version>
 		<org.springframework.version>3.1.1.RELEASE</org.springframework.version>
 		<org.springframework.aspects.version>3.1.1.RELEASE</org.springframework.aspects.version>
 		<org.springframework.data.jpa.version>1.1.0.RELEASE</org.springframework.data.jpa.version>
@@ -179,6 +179,12 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>${org.mockito-core.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.2.4</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -388,6 +394,26 @@
 					<modelFile>src/main/resources/model/emf/bitemporal-daofusion.uml</modelFile>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>copy-files</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy file="src/main/resources/config.properties_example"
+									tofile="src/main/resources/config.properties" />
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 		<pluginManagement>
@@ -408,6 +434,25 @@
 										<versionRange>[1.0.0-SNAPSHOT,)</versionRange>
 										<goals>
 											<goal>generate</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-antrun-plugin
+										</artifactId>
+										<versionRange>
+											[1.7,)
+										</versionRange>
+										<goals>
+											<goal>run</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
