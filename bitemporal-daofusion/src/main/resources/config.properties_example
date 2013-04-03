@@ -1,5 +1,6 @@
 # Database
 db.driverClassName=org.hsqldb.jdbcDriver
+# db.driverClassName=oracle.jdbc.OracleDriver
 
 # HSQLDB Memory DB
 db.url=jdbc:hsqldb:mem:testdb
