@@ -37,7 +37,7 @@ import com.anasoft.os.daofusion.bitemporal.TimeUtils;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:de/crowdcode/bitemporal/example/spring-example.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@TransactionConfiguration(defaultRollback = true)
 public class PersonTest {
 
 	@Test

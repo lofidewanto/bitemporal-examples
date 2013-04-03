@@ -1,6 +1,11 @@
 # Database
 db.driverClassName=org.hsqldb.jdbcDriver
-db.url=jdbc:hsqldb:mem:db
+# HSQLDB Memory DB
+# db.url=jdbc:hsqldb:mem:testdb
+# Oracle XE 
+# db.url=jdbc:oracle:thin:@localhost:1521:testdb
+# HSQLDB File DB
+db.url=jdbc:hsqldb:file:target/testdb
 db.username=sa
 db.password=
 
