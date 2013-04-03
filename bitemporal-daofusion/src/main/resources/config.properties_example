@@ -19,5 +19,5 @@ db.password=
 # Hibernate
 hibernate.hbm2ddl.auto=auto
 hibernate.dialect=org.hibernate.dialect.H2Dialect
-# hibernate.dialect=org.hibernate.dialect.Oracle9Dialect
+# hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
 hibernate.show_sql=true
