@@ -6,5 +6,8 @@
 
 	<persistence-unit name="bitemporal" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>de.crowdcode.bitemporal.example.AdresseImpl</class>
+		<class>de.crowdcode.bitemporal.example.BitemporalAdresseImpl</class>
+		<class>de.crowdcode.bitemporal.example.PersonImpl</class>
 	</persistence-unit>
 </persistence>

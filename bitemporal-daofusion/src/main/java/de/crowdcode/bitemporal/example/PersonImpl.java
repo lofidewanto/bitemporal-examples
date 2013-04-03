@@ -49,10 +49,10 @@ public class PersonImpl extends OidBasedMutablePersistentEntity implements Perso
 
 	private static final long serialVersionUID = -7110031754812700550L;
 
-	@Column
+	@Column(name = "vorname")
 	private String vorname;
 
-	@Column
+	@Column(name = "nachname")
 	private String nachname;
 
 	@OneToMany(fetch = FetchType.LAZY)

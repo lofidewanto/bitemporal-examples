@@ -18,7 +18,8 @@
  */
 package de.crowdcode.bitemporal.example;
 
-import static org.junit.Assert.assertTrue;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,25 +38,49 @@ import com.anasoft.os.daofusion.bitemporal.TimeUtils;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:de/crowdcode/bitemporal/example/spring-example.xml" })
-@TransactionConfiguration(defaultRollback = true)
+@TransactionConfiguration(defaultRollback = false)
 public class PersonTest {
+
+	@Inject
+	@Named("PersonServiceImpl")
+	private PersonServiceImpl personServiceImpl;
+
+	@Inject
+	@Named("AdresseServiceImpl")
+	private AdresseServiceImpl adresseServiceImpl;
 
 	@Test
 	public void testCreateBitemporalAdressen() {
-		assertTrue(true);
-
 		PersonImpl person = new PersonImpl();
-		TimeUtils.setReference(TimeUtils.day(1, 1, 2010));
+		person.setNachname("Jawa");
+		person.setVorname("Lofi");
+
+		personServiceImpl.createPerson(person);
 
 		Adresse firstAdresse = new AdresseImpl();
-		Adresse secondAdresse = new AdresseImpl();
+		firstAdresse.setPerson(person);
+		firstAdresse.setStrasse("Koeln 21");
+		firstAdresse.setStadt("Koeln");
+		firstAdresse.setPlz("50698");
 
-		// First Order will be valid from now on (1-Jan-2010 .. end_of_time)
+		adresseServiceImpl.createAdresse((AdresseImpl) firstAdresse);
+
+		TimeUtils.setReference(TimeUtils.day(1, 1, 2010));
+
+		// First Adresse will be valid from now on (1-Jan-2010 .. end_of_time)
 		person.getBitemporalAdressen().set(firstAdresse);
 
-		// Second Order supersedes the first one:
-		// - First order valid in [1-Jan-2010 .. 10-Feb-2010]
-		// - Second order valid in [10-Feb-2010 .. end_of_time]
+		Adresse secondAdresse = new AdresseImpl();
+		secondAdresse.setPerson(person);
+		secondAdresse.setStrasse("Berlin 22");
+		secondAdresse.setStadt("Berlin");
+		secondAdresse.setPlz("10313");
+
+		adresseServiceImpl.createAdresse((AdresseImpl) secondAdresse);
+
+		// Second Adresse supersedes the first one:
+		// - First Adresse valid in [1-Jan-2010 .. 10-Feb-2010]
+		// - Second Adresse valid in [10-Feb-2010 .. end_of_time]
 		person.getBitemporalAdressen().set(secondAdresse, TimeUtils.from(TimeUtils.day(10, 2, 2010)));
 	}
 }

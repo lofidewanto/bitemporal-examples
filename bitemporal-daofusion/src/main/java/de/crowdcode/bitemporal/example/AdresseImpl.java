@@ -39,13 +39,13 @@ public class AdresseImpl extends OidBasedMutablePersistentEntity implements Adre
 
 	private static final long serialVersionUID = -9005004076768341870L;
 
-	@Column
+	@Column(name = "strasse")
 	private String strasse;
 
-	@Column
+	@Column(name = "plz")
 	private String plz;
 
-	@Column
+	@Column(name = "stadt")
 	private String stadt;
 
 	@ManyToOne(targetEntity = PersonImpl.class)

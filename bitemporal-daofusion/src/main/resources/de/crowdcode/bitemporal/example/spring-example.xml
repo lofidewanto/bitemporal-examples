@@ -12,7 +12,6 @@
 	<context:component-scan base-package="de.crowdcode.bitemporal.example" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
-	<jpa:repositories base-package="de.extrastandard.persistence.repository" />
 
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
