@@ -36,6 +36,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>${org.springframework.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -150,12 +156,21 @@
 			<version>1.5</version>
 		</dependency>
 
-		<!-- Basic stuff -->
+		<!-- Logger stuffs -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
+			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
+			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- Databases -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -202,6 +217,7 @@
 			<version>3.0</version>
 		</dependency>
 
+		<!-- KissMDA -->
 		<dependency>
 			<groupId>org.eclipse.uml2</groupId>
 			<artifactId>org.eclipse.uml2.uml.resources</artifactId>
@@ -417,6 +433,8 @@
 							<tasks>
 								<copy file="src/main/resources/config.properties_example"
 									tofile="src/main/resources/config.properties" />
+								<copy file="src/main/resources/log4j.properties_example"
+									tofile="src/main/resources/log4j.properties" />
 							</tasks>
 						</configuration>
 					</execution>
