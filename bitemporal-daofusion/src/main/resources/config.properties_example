@@ -2,9 +2,9 @@
 db.driverClassName=org.hsqldb.jdbcDriver
 
 # HSQLDB Memory DB
-# db.url=jdbc:hsqldb:mem:testdb
-# db.username=sa
-# db.password=
+db.url=jdbc:hsqldb:mem:testdb
+db.username=sa
+db.password=
 
 # Oracle XE 
 # db.url=jdbc:oracle:thin:@localhost:1521:xe
@@ -12,11 +12,12 @@ db.driverClassName=org.hsqldb.jdbcDriver
 # db.password=testdb
 
 # HSQLDB File DB
-db.url=jdbc:hsqldb:file:target/testdb
-db.username=sa
-db.password=
+# db.url=jdbc:hsqldb:file:target/testdb
+# db.username=sa
+# db.password=
 
 # Hibernate
 hibernate.hbm2ddl.auto=auto
 hibernate.dialect=org.hibernate.dialect.H2Dialect
+# hibernate.dialect=org.hibernate.dialect.Oracle9Dialect
 hibernate.show_sql=true
