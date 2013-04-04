@@ -34,7 +34,7 @@ import org.joda.time.Interval;
 
 import com.anasoft.os.daofusion.bitemporal.WrappedBitemporalProperty;
 import com.anasoft.os.daofusion.bitemporal.WrappedValueAccessor;
-import com.anasoft.os.daofusion.test.example.entity.OidBasedMutablePersistentEntity;
+import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
 
 /**
  * Person implementation.
@@ -45,7 +45,7 @@ import com.anasoft.os.daofusion.test.example.entity.OidBasedMutablePersistentEnt
  */
 @Entity
 @Table(name = "person")
-public class PersonImpl extends OidBasedMutablePersistentEntity implements Person {
+public class PersonImpl extends MutablePersistentEntity implements Person {
 
 	private static final long serialVersionUID = -7110031754812700550L;
 

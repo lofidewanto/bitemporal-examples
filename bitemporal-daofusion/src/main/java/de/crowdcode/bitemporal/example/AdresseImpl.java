@@ -24,7 +24,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.anasoft.os.daofusion.test.example.entity.OidBasedMutablePersistentEntity;
+import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
 
 /**
  * Adresse implementation.
@@ -35,7 +35,7 @@ import com.anasoft.os.daofusion.test.example.entity.OidBasedMutablePersistentEnt
  */
 @Entity
 @Table(name = "adresse")
-public class AdresseImpl extends OidBasedMutablePersistentEntity implements Adresse {
+public class AdresseImpl extends MutablePersistentEntity implements Adresse {
 
 	private static final long serialVersionUID = -9005004076768341870L;
 
