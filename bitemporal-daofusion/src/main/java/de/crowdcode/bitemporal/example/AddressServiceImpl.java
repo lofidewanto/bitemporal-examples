@@ -25,7 +25,7 @@ import javax.inject.Named;
 public class AddressServiceImpl implements AddressService {
 
 	@Inject
-	@Named("AdresseRepository")
+	@Named("AddressRepository")
 	private AddressRepository addressRepository;
 
 	@Override
