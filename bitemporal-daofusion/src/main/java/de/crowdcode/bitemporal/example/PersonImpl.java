@@ -50,58 +50,65 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	private static final long serialVersionUID = -7110031754812700550L;
 
 	@Column(name = "vorname")
-	private String vorname;
+	private String firstname;
 
 	@Column(name = "nachname")
-	private String nachname;
+	private String lastname;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "person")
-	private final Collection<BitemporalAdresseImpl> bitemporalAdressen = new LinkedList<BitemporalAdresseImpl>();
+	private final Collection<BitemporalAddressImpl> bitemporalAddresses = new LinkedList<BitemporalAddressImpl>();
 
 	// Use this method for accessing bitemporal trace of Adressen values
-	public WrappedBitemporalProperty<Adresse, BitemporalAdresseImpl> getBitemporalAdressen() {
-		return new WrappedBitemporalProperty<Adresse, BitemporalAdresseImpl>(bitemporalAdressen,
-				new WrappedValueAccessor<Adresse, BitemporalAdresseImpl>() {
+	@Override
+	public WrappedBitemporalProperty<Address, BitemporalAddressImpl> address() {
+		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(bitemporalAddresses,
+				new WrappedValueAccessor<Address, BitemporalAddressImpl>() {
 
 					private static final long serialVersionUID = -3548772720386675459L;
 
 					@Override
-					public BitemporalAdresseImpl wrapValue(Adresse value, Interval validityInterval) {
-						return new BitemporalAdresseImpl(value, validityInterval);
+					public BitemporalAddressImpl wrapValue(Address value, Interval validityInterval) {
+						return new BitemporalAddressImpl(value, validityInterval);
 					}
 				});
 	}
 
 	@Override
-	public String getVorname() {
-		return vorname;
-	}
-
-	@Override
-	public void setVorname(String vorname) {
-		this.vorname = vorname;
-	}
-
-	@Override
-	public Collection<Adresse> getAdressen() {
-		// TODO Adresse getter
+	public WrappedBitemporalProperty<Address, BitemporalAddressImpl> alive() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void addAdressen(Adresse adress) {
-		// TODO Adresse adder
+	public String getFirstname() {
+		return firstname;
 	}
 
 	@Override
-	public String getNachname() {
-		return nachname;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 	@Override
-	public void setNachname(String nachname) {
-		this.nachname = nachname;
+	public Collection<Address> getAddresses() {
+		// TODO Address getter
+		return null;
+	}
+
+	@Override
+	public void addAddresses(Address address) {
+		// TODO Address adder
+	}
+
+	@Override
+	public String getLastname() {
+		return lastname;
+	}
+
+	@Override
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 }

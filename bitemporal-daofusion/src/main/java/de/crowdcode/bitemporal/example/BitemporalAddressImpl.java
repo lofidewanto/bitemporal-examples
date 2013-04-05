@@ -18,77 +18,61 @@
  */
 package de.crowdcode.bitemporal.example;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
+import org.joda.time.Interval;
+
+import com.anasoft.os.daofusion.bitemporal.Bitemporal;
+import com.anasoft.os.daofusion.bitemporal.BitemporalWrapper;
 
 /**
- * Adresse implementation.
+ * BitemporalAdresse implementation.
  * 
  * @author Lofi Dewanto
  * @since 1.0.0
  * @version 1.0.0
  */
 @Entity
-@Table(name = "adresse")
-public class AdresseImpl extends MutablePersistentEntity implements Adresse {
+@Table(name = "bitemp_addr")
+public class BitemporalAddressImpl extends BitemporalWrapper<Address> implements BitemporalAddress {
 
-	private static final long serialVersionUID = -9005004076768341870L;
+	private static final long serialVersionUID = -3045504986806681059L;
 
-	@Column(name = "strasse")
-	private String strasse;
+	@ManyToOne(targetEntity = AddressImpl.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	private Address value;
 
-	@Column(name = "plz")
-	private String plz;
+	protected BitemporalAddressImpl() {
+	}
 
-	@Column(name = "stadt")
-	private String stadt;
-
-	@ManyToOne(targetEntity = PersonImpl.class)
-	@JoinColumn(nullable = false, updatable = false)
-	private Person person;
-
-	@Override
-	public String getStrasse() {
-		return strasse;
+	public BitemporalAddressImpl(Address value, Interval validityInterval) {
+		super(value, validityInterval);
 	}
 
 	@Override
-	public void setStrasse(String strasse) {
-		this.strasse = strasse;
+	public Address getAddress() {
+		return value;
 	}
 
 	@Override
-	public Person getPerson() {
-		return person;
+	public void setAddress(Address address) {
+		this.value = address;
 	}
 
 	@Override
-	public void setPerson(Person person) {
-		this.person = person;
+	protected void setValue(Address value) {
+		this.value = value;
 	}
 
 	@Override
-	public String getStadt() {
-		return stadt;
+	public Address getValue() {
+		return value;
 	}
 
 	@Override
-	public void setStadt(String stadt) {
-		this.stadt = stadt;
-	}
-
-	@Override
-	public String getPlz() {
-		return plz;
-	}
-
-	@Override
-	public void setPlz(String plz) {
-		this.plz = plz;
+	public Bitemporal copyWith(Interval validityInterval) {
+		return new BitemporalAddressImpl(value, validityInterval);
 	}
 }

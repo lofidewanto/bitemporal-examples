@@ -18,19 +18,21 @@
  */
 package de.crowdcode.bitemporal.example;
 
-import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-@Named("PersonServiceImpl")
-public class PersonServiceImpl implements PersonService {
+import org.springframework.stereotype.Repository;
 
-	@Inject
-	@Named("PersonRepository")
-	private PersonRepository personRepository;
+@Repository
+@Named("AddressRepository")
+public class AddressRepository {
 
-	@Override
-	public Person createPerson(Person person) {
-		Person personCreated = personRepository.save(person);
-		return personCreated;
+	@PersistenceContext
+	private EntityManager em;
+
+	public Address save(Address address) {
+		em.persist(address);
+		return address;
 	}
 }

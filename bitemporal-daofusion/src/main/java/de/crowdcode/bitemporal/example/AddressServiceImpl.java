@@ -21,16 +21,16 @@ package de.crowdcode.bitemporal.example;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@Named("PersonServiceImpl")
-public class PersonServiceImpl implements PersonService {
+@Named("AddressServiceImpl")
+public class AddressServiceImpl implements AddressService {
 
 	@Inject
-	@Named("PersonRepository")
-	private PersonRepository personRepository;
+	@Named("AdresseRepository")
+	private AddressRepository addressRepository;
 
 	@Override
-	public Person createPerson(Person person) {
-		Person personCreated = personRepository.save(person);
-		return personCreated;
+	public Address createAddress(Address address) {
+		Address addressCreated = addressRepository.save(address);
+		return addressCreated;
 	}
 }
