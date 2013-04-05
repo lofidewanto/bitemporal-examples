@@ -10,7 +10,7 @@
                 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<context:component-scan base-package="de.crowdcode.bitemporal.example" />
-
+	<context:annotation-config />
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<bean

@@ -23,7 +23,6 @@
 		<org.springframework.aspects.version>3.1.2.RELEASE</org.springframework.aspects.version>
 		<org.springframework.data.jpa.version>1.1.0.RELEASE</org.springframework.data.jpa.version>
 		<org.springframework.ws.version>2.1.0.RELEASE</org.springframework.ws.version>
-		<javax.enterprise.cdi-api.version>1.0</javax.enterprise.cdi-api.version>
 		<org.aspectj.aspectjrt.version>1.6.11</org.aspectj.aspectjrt.version>
 		<org.aspectj.aspectjweaver.version>1.6.4</org.aspectj.aspectjweaver.version>
 		<org.mockito-core.version>1.9.5-rc1</org.mockito-core.version>
@@ -91,12 +90,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.enterprise</groupId>
-			<artifactId>cdi-api</artifactId>
-			<version>${javax.enterprise.cdi-api.version}</version>
-		</dependency>
-
 		<!-- Aspects -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -108,6 +101,12 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${org.aspectj.aspectjweaver.version}</version>
 		</dependency>
+		<dependency>
+        	<groupId>cglib</groupId>
+        	<artifactId>cglib</artifactId>
+        	<version>2.2.2</version>
+        	<scope>compile</scope>
+    	</dependency>
 
 		<!-- DAO Fusion stuff -->
 		<dependency>
@@ -194,6 +193,7 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Unit Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -212,12 +212,13 @@
 			<version>2.2.4</version>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>3.0</version>
-		</dependency>
+		
+		<!-- Java Inject -->
+		<dependency>  
+            <groupId>javax.inject</groupId>  
+            <artifactId>javax.inject</artifactId>  
+            <version>1</version>  
+        </dependency> 
 
 		<!-- KissMDA -->
 		<dependency>
