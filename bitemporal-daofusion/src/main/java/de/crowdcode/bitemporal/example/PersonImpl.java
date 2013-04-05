@@ -49,10 +49,10 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 
 	private static final long serialVersionUID = -7110031754812700550L;
 
-	@Column(name = "vorname")
+	@Column(name = "firstname")
 	private String firstname;
 
-	@Column(name = "nachname")
+	@Column(name = "lastname")
 	private String lastname;
 
 	@OneToMany(fetch = FetchType.LAZY)
@@ -60,7 +60,7 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	@JoinColumn(name = "person")
 	private final Collection<BitemporalAddressImpl> bitemporalAddresses = new LinkedList<BitemporalAddressImpl>();
 
-	// Use this method for accessing bitemporal trace of Adressen values
+	// Use this method for accessing bitemporal trace of Addresses values
 	@Override
 	public WrappedBitemporalProperty<Address, BitemporalAddressImpl> address() {
 		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(bitemporalAddresses,
