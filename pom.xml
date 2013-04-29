@@ -27,7 +27,7 @@
 	<!-- Modules                                                         -->
 	<!-- =============================================================== -->
 	<modules>
-		<module>bitemporal-daofusion</module>
+        <module>bitemporal-daofusion</module>
         <module>bitemporal-envers</module>
   </modules>
 </project>
