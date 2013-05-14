@@ -16,167 +16,200 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.version>4.10</junit.version>
-        <kissmda.maven.plugin.version>1.0.0</kissmda.maven.plugin.version>
-        <kissmda.cartridges.simple.java.version>1.0.0</kissmda.cartridges.simple.java.version>
+		<kissmda.maven.plugin.version>1.1.0-SNAPSHOT</kissmda.maven.plugin.version>
+		<kissmda.cartridges.simple.java.version>1.1.0-SNAPSHOT</kissmda.cartridges.simple.java.version>
+		<hibernate-core.version>4.2.1.Final</hibernate-core.version>
+		<hibernate-entitymanager.version>4.2.1.Final</hibernate-entitymanager.version>
+		<hibernate-envers.version>4.2.1.Final</hibernate-envers.version>
+		<c3p0.version>0.9.1.2</c3p0.version>
+		<h2.version>1.1.115</h2.version>
+		<slf4j.version>1.6.1</slf4j.version>
+		<org.springframework.version>3.1.2.RELEASE</org.springframework.version>
+		<org.springframework.aspects.version>3.1.2.RELEASE</org.springframework.aspects.version>
+		<org.springframework.data.jpa.version>1.1.0.RELEASE</org.springframework.data.jpa.version>
+		<org.springframework.ws.version>2.1.0.RELEASE</org.springframework.ws.version>
+		<org.aspectj.aspectjrt.version>1.6.11</org.aspectj.aspectjrt.version>
+		<org.aspectj.aspectjweaver.version>1.6.4</org.aspectj.aspectjweaver.version>
+		<org.mockito-core.version>1.9.5-rc1</org.mockito-core.version>
 	</properties>
 
 	<!-- Dependencies -->
 	<dependencies>
+		<!-- Spring/DI -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${org.springframework.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${org.springframework.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${org.springframework.data.jpa.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${org.springframework.aspects.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Aspects -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj.aspectjrt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${org.aspectj.aspectjweaver.version}</version>
+		</dependency>
+		<dependency>
+        	<groupId>cglib</groupId>
+        	<artifactId>cglib</artifactId>
+        	<version>2.2.2</version>
+        	<scope>compile</scope>
+    	</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate-entitymanager.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>${hibernate-envers.version}</version>
+		</dependency>
+
+		<!-- Joda Time -->		
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.5</version>
+		</dependency>
+
+		<!-- Logger stuffs -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- Databases -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${c3p0.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Oracle JDBC driver
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>10.2.0.4.0</version>
+			<scope>test</scope>
+		</dependency>
+		--> 
+
+		<!-- Unit Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>3.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse.uml2</groupId>
-			<artifactId>org.eclipse.uml2.uml.resources</artifactId>
-			<version>3.1.0.v201005031530</version>
-			<scope>runtime</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.runtime</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${org.mockito-core.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.uml2</groupId>
-			<artifactId>org.eclipse.uml2.uml</artifactId>
-			<version>3.1.0.v201006071150</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.osgi</groupId>
-					<artifactId>org.eclipse.osgi</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.equinox</groupId>
-					<artifactId>org.eclipse.equinox.registry</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.runtime</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.2.4</version>
+			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.uml2</groupId>
-			<artifactId>org.eclipse.uml2.common</artifactId>
-			<version>1.5.0.v201005031530</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.osgi</groupId>
-					<artifactId>org.eclipse.osgi</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.runtime</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.common</artifactId>
-			<version>2.6.0.v20100614-1136</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.osgi</groupId>
-					<artifactId>org.eclipse.osgi</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.equinox</groupId>
-					<artifactId>org.eclipse.equinox.common</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.runtime</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.ecore</artifactId>
-			<version>2.6.0.v20100614-1136</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.osgi</groupId>
-					<artifactId>org.eclipse.osgi</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.equinox</groupId>
-					<artifactId>org.eclipse.equinox.common</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.equinox</groupId>
-					<artifactId>org.eclipse.equinox.registry</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.contenttype</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.jobs</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.runtime</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.resources</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-			<version>2.5.0.v20100521-1846</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.osgi</groupId>
-					<artifactId>org.eclipse.osgi</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.equinox</groupId>
-					<artifactId>org.eclipse.equinox.common</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.equinox</groupId>
-					<artifactId>org.eclipse.equinox.registry</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.contenttype</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.runtime</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.mapping.ecore2xml</artifactId>
-			<version>2.5.0.v20100521-1847</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.equinox</groupId>
-					<artifactId>org.eclipse.equinox.registry</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.core</groupId>
-					<artifactId>org.eclipse.core.runtime</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+		
+		<!-- Java Inject -->
+		<dependency>  
+            <groupId>javax.inject</groupId>  
+            <artifactId>javax.inject</artifactId>  
+            <version>1</version>  
+        </dependency> 
 	</dependencies>
 
 	<build>
