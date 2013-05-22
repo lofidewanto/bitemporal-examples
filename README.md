@@ -11,7 +11,7 @@ You can take a look at some examples in this folder
 
 * **bitemporal-daofusion**: this is a bitemporal example using the framework from Erwin Vervaet and DAOFusion
 * **bitemporal-envers**: this is a bitemporal example using the framework from Hibernate Envers
-* **no-temporal**: this is an example without temporality, very simple example
+* **non-temporal**: this is an example without temporality, very simple example
 
 
 Have fun! 
