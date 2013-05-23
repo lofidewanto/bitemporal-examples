@@ -281,6 +281,28 @@
 					<modelFile>src/main/resources/model/emf/non-temporal.uml</modelFile>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>copy-files</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy file="src/main/resources/config.properties_example"
+									tofile="src/main/resources/config.properties" />
+								<copy file="src/main/resources/log4j.properties_example"
+									tofile="src/main/resources/log4j.properties" />
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 		<pluginManagement>
