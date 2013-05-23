@@ -20,13 +20,9 @@ package de.crowdcode.bitemporal.example;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 /**
  * Person implementation.
@@ -39,15 +35,17 @@ import org.hibernate.annotations.CascadeType;
 @Table(name = "person")
 public class PersonImpl implements Person {
 
+	@SuppressWarnings("unused")
+	@Id
+	@GeneratedValue
+	private Long id;
+
 	@Column(name = "firstname")
 	private String firstname;
 
 	@Column(name = "lastname")
 	private String lastname;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@Cascade(value = { CascadeType.ALL })
-	@JoinColumn(name = "person")
 	@Override
 	public String getFirstname() {
 		return firstname;
