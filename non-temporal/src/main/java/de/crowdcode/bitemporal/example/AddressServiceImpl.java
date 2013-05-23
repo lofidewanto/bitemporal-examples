@@ -18,22 +18,19 @@
  */
 package de.crowdcode.bitemporal.example;
 
-/**
- * Hello world!
- * 
- * @author Lofi Dewanto
- * @since 1.0
- * @version 1.0
- */
-public class App {
+import javax.inject.Inject;
+import javax.inject.Named;
 
-    /**
-     * Main program.
-     * 
-     * @param args
-     *          arguments
-     */
-    public static void main(String[] args) {
-      System.out.println("Hello World!");
-    }
+@Named("AddressServiceImpl")
+public class AddressServiceImpl implements AddressService {
+
+	@Inject
+	@Named("AddressRepository")
+	private AddressRepository addressRepository;
+
+	@Override
+	public Address createAddress(Address address) {
+		Address addressCreated = addressRepository.save(address);
+		return addressCreated;
+	}
 }
