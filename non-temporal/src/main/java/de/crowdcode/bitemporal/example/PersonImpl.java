@@ -77,11 +77,11 @@ public class PersonImpl implements Person {
 
 	@Override
 	public Address address() {
-		return null;
+		return getAddress();
 	}
 
 	@Override
 	public Address alive() {
-		return null;
+		return getAddress();
 	}
 }

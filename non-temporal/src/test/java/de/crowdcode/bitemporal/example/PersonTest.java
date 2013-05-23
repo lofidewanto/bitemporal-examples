@@ -65,8 +65,8 @@ public class PersonTest {
 
 		addressServiceImpl.createAddress(firstAddress);
 
-		// First Adresse will be valid from now on (1-Jan-2010 .. end_of_time)
-		// person.address().set(firstAddress);
+		// First Adresse
+		person.setAddress(firstAddress);
 
 		Address secondAddress = new AddressImpl();
 		secondAddress.setPerson(person);
@@ -76,9 +76,7 @@ public class PersonTest {
 
 		addressServiceImpl.createAddress(secondAddress);
 
-		// Second Adresse supersedes the first one:
-		// - First Adresse valid in [1-Jan-2010 .. 10-Feb-2010]
-		// - Second Adresse valid in [10-Feb-2010 .. end_of_time]
-		// person.address().set(secondAddress, TimeUtils.from(TimeUtils.day(10, 2, 2010)));
+		// Second Adresse supersedes the first one
+		person.setAddress(secondAddress);
 	}
 }
