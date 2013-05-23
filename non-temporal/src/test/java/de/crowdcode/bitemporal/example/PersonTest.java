@@ -88,5 +88,9 @@ public class PersonTest {
 		// Assert
 		Address secondCheckedAddress = person.getAddress();
 		assertEquals(secondAddress, secondCheckedAddress);
+
+		// Assert amount of object
+		// One person and two addresses but the person has only one address
+		// TODO Assert this content
 	}
 }
