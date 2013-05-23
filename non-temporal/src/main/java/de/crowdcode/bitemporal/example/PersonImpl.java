@@ -18,10 +18,13 @@
  */
 package de.crowdcode.bitemporal.example;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -33,7 +36,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "person")
-public class PersonImpl implements Person {
+public class PersonImpl implements Person, Serializable {
+
+	private static final long serialVersionUID = 2909659022959145389L;
 
 	@SuppressWarnings("unused")
 	@Id
@@ -45,6 +50,9 @@ public class PersonImpl implements Person {
 
 	@Column(name = "lastname")
 	private String lastname;
+
+	@OneToOne(targetEntity = AddressImpl.class, mappedBy = "person")
+	private Address address;
 
 	@Override
 	public String getFirstname() {
@@ -58,11 +66,12 @@ public class PersonImpl implements Person {
 
 	@Override
 	public Address getAddress() {
-		return null;
+		return this.address;
 	}
 
 	@Override
 	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override

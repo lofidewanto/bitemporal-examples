@@ -18,6 +18,8 @@
  */
 package de.crowdcode.bitemporal.example;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -65,8 +67,12 @@ public class PersonTest {
 
 		addressServiceImpl.createAddress(firstAddress);
 
-		// First Adresse
+		// First address
 		person.setAddress(firstAddress);
+
+		// Assert
+		Address firstCheckedAddress = person.getAddress();
+		assertEquals(firstAddress, firstCheckedAddress);
 
 		Address secondAddress = new AddressImpl();
 		secondAddress.setPerson(person);
@@ -78,5 +84,9 @@ public class PersonTest {
 
 		// Second Adresse supersedes the first one
 		person.setAddress(secondAddress);
+
+		// Assert
+		Address secondCheckedAddress = person.getAddress();
+		assertEquals(secondAddress, secondCheckedAddress);
 	}
 }
