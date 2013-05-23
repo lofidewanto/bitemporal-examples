@@ -82,7 +82,7 @@ public class PersonTest {
 
 		addressServiceImpl.createAddress(secondAddress);
 
-		// Second Adresse supersedes the first one
+		// Second address supersedes the first one
 		person.setAddress(secondAddress);
 
 		// Assert
