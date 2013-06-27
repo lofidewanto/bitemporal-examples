@@ -95,6 +95,15 @@ public class PersonTest {
 		// Assert
 		Address secondCheckedAddress = person.getAddress();
 		assertEquals(secondAddress, secondCheckedAddress);
+		assertEquals(secondAddress.getCity(), secondCheckedAddress.getCity());
+
+		Address secondCheckedAddressMethod = person.address();
+		assertEquals(secondAddress, secondCheckedAddressMethod);
+		assertEquals(secondAddress.getCity(), secondCheckedAddressMethod.getCity());
+
+		Address secondCheckedAddressAlive = person.alive();
+		assertEquals(secondAddress, secondCheckedAddressAlive);
+		assertEquals(secondAddress.getCity(), secondCheckedAddressAlive.getCity());
 
 		// Assert amount of object
 		// One person and two addresses but the person has only one address
