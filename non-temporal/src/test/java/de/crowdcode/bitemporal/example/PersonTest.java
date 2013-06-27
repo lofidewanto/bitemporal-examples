@@ -61,14 +61,14 @@ public class PersonTest {
 	@Test
 	public void testCreateNonTemporalAdressen() {
 		PersonImpl person = new PersonImpl();
-		person.setLastname("Jawa");
-		person.setFirstname("Lofi");
+		person.setLastname("Mueller");
+		person.setFirstname("Hans");
 
 		personService.createPerson(person);
 
 		Address firstAddress = new AddressImpl();
 		firstAddress.setPerson(person);
-		firstAddress.setStreet("Koeln 21");
+		firstAddress.setStreet("Hauptstr. 21");
 		firstAddress.setCity("Koeln");
 		firstAddress.setCode("50698");
 
@@ -83,13 +83,14 @@ public class PersonTest {
 
 		Address secondAddress = new AddressImpl();
 		secondAddress.setPerson(person);
-		secondAddress.setStreet("Berlin 22");
+		secondAddress.setStreet("Grossmarkt 22");
 		secondAddress.setCity("Berlin");
 		secondAddress.setCode("10313");
 
 		addressService.createAddress(secondAddress);
 
 		// Second address supersedes the first one
+		// The person has only ONE current address
 		person.setAddress(secondAddress);
 
 		// Assert
@@ -106,7 +107,7 @@ public class PersonTest {
 		assertEquals(secondAddress.getCity(), secondCheckedAddressAlive.getCity());
 
 		// Assert amount of object
-		// One person and two addresses but the person has only one address
+		// One person and two addresses but the person has only one current address
 		Integer amountOfPerson = personService.getAmountOfPerson();
 		assertEquals(1, amountOfPerson.intValue());
 		Integer amountOfAddress = addressService.getAmountOfAddress();
