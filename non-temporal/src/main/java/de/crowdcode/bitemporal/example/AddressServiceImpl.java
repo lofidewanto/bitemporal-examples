@@ -18,19 +18,36 @@
  */
 package de.crowdcode.bitemporal.example;
 
+import java.util.Collection;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@Named("AddressServiceImpl")
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+@Named("addressService")
+@Transactional(propagation = Propagation.REQUIRED)
 public class AddressServiceImpl implements AddressService {
 
 	@Inject
-	@Named("AddressRepository")
+	@Named("addressRepository")
 	private AddressRepository addressRepository;
 
 	@Override
 	public Address createAddress(Address address) {
 		Address addressCreated = addressRepository.save(address);
 		return addressCreated;
+	}
+
+	@Override
+	public Integer getAmountOfAddress() {
+		Integer amount = addressRepository.getAmount();
+		return amount;
+	}
+
+	@Override
+	public Collection<Address> findAllAddresses() {
+		return addressRepository.findAll();
 	}
 }

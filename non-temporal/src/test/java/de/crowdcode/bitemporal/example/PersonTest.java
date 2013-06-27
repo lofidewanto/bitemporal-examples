@@ -20,14 +20,19 @@ package de.crowdcode.bitemporal.example;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collection;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -38,26 +43,28 @@ import org.springframework.transaction.annotation.Transactional;
  * @version 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:de/crowdcode/bitemporal/example/spring-example.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
-@Transactional
+@ContextConfiguration(locations = { "classpath:META-INF/beans.xml" })
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@Transactional(propagation = Propagation.REQUIRED)
 public class PersonTest {
 
-	@Inject
-	@Named("PersonServiceImpl")
-	private PersonServiceImpl personServiceImpl;
+	private final static Logger logger = LoggerFactory.getLogger(PersonTest.class);
 
 	@Inject
-	@Named("AddressServiceImpl")
-	private AddressServiceImpl addressServiceImpl;
+	@Named("personService")
+	private PersonService personService;
+
+	@Inject
+	@Named("addressService")
+	private AddressService addressService;
 
 	@Test
-	public void testCreateBitemporalAdressen() {
+	public void testCreateNonTemporalAdressen() {
 		PersonImpl person = new PersonImpl();
 		person.setLastname("Jawa");
 		person.setFirstname("Lofi");
 
-		personServiceImpl.createPerson(person);
+		personService.createPerson(person);
 
 		Address firstAddress = new AddressImpl();
 		firstAddress.setPerson(person);
@@ -65,7 +72,7 @@ public class PersonTest {
 		firstAddress.setCity("Koeln");
 		firstAddress.setCode("50698");
 
-		addressServiceImpl.createAddress(firstAddress);
+		addressService.createAddress(firstAddress);
 
 		// First address
 		person.setAddress(firstAddress);
@@ -80,7 +87,7 @@ public class PersonTest {
 		secondAddress.setCity("Berlin");
 		secondAddress.setCode("10313");
 
-		addressServiceImpl.createAddress(secondAddress);
+		addressService.createAddress(secondAddress);
 
 		// Second address supersedes the first one
 		person.setAddress(secondAddress);
@@ -91,6 +98,31 @@ public class PersonTest {
 
 		// Assert amount of object
 		// One person and two addresses but the person has only one address
-		// TODO Assert this content
+		Integer amountOfPerson = personService.getAmountOfPerson();
+		assertEquals(1, amountOfPerson.intValue());
+		Integer amountOfAddress = addressService.getAmountOfAddress();
+		assertEquals(2, amountOfAddress.intValue());
+
+		Address currentAddress = person.getAddress();
+		assertEquals("Berlin", currentAddress.getCity());
+
+		// Show in logger
+		Collection<Person> persons = personService.findAllPersons();
+		for (Person person2 : persons) {
+			logger.info("XXX - Person: " + person2.getFirstname());
+			logger.info("XXX - Person.address: " + person2.getAddress().getCity());
+		}
+		Collection<Address> addresses = addressService.findAllAddresses();
+		for (Address address : addresses) {
+			logger.info("YYY - Address: " + address.getCity());
+			logger.info("YYY - Address.person: " + address.getPerson().getFirstname());
+		}
+	}
+
+	@Test
+	public void testEmptyAddresses() {
+		// No address object because we make a rollback
+		Integer amountOfAddress = addressService.getAmountOfAddress();
+		assertEquals(0, amountOfAddress.intValue());
 	}
 }

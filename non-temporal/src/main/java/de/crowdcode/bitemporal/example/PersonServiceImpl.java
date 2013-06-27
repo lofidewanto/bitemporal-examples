@@ -18,19 +18,36 @@
  */
 package de.crowdcode.bitemporal.example;
 
+import java.util.Collection;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@Named("PersonServiceImpl")
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+@Named("personService")
+@Transactional(propagation = Propagation.REQUIRED)
 public class PersonServiceImpl implements PersonService {
 
 	@Inject
-	@Named("PersonRepository")
+	@Named("personRepository")
 	private PersonRepository personRepository;
 
 	@Override
 	public Person createPerson(Person person) {
 		Person personCreated = personRepository.save(person);
 		return personCreated;
+	}
+
+	@Override
+	public Integer getAmountOfPerson() {
+		Integer amount = personRepository.getAmount();
+		return amount;
+	}
+
+	@Override
+	public Collection<Person> findAllPersons() {
+		return personRepository.findAll();
 	}
 }

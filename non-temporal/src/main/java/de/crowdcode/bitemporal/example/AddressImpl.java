@@ -24,7 +24,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -56,7 +55,6 @@ public class AddressImpl implements Address, Serializable {
 	private String city;
 
 	@OneToOne(targetEntity = PersonImpl.class)
-	@JoinColumn(nullable = false, updatable = false)
 	private Person person;
 
 	@Override
