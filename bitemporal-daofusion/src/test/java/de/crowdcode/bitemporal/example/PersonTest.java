@@ -44,20 +44,20 @@ import com.anasoft.os.daofusion.bitemporal.TimeUtils;
 public class PersonTest {
 
 	@Inject
-	@Named("PersonServiceImpl")
-	private PersonServiceImpl personServiceImpl;
+	@Named("personService")
+	private PersonService personService;
 
 	@Inject
-	@Named("AddressServiceImpl")
-	private AddressServiceImpl addressServiceImpl;
+	@Named("addressService")
+	private AddressService addressService;
 
 	@Test
 	public void testCreateBitemporalAdressen() {
 		PersonImpl person = new PersonImpl();
-		person.setLastname("Jawa");
-		person.setFirstname("Lofi");
+		person.setLastname("Mueller");
+		person.setFirstname("Hans");
 
-		personServiceImpl.createPerson(person);
+		personService.createPerson(person);
 
 		Address firstAddress = new AddressImpl();
 		firstAddress.setPerson(person);
@@ -65,7 +65,7 @@ public class PersonTest {
 		firstAddress.setCity("Koeln");
 		firstAddress.setCode("50698");
 
-		addressServiceImpl.createAddress(firstAddress);
+		addressService.createAddress(firstAddress);
 
 		TimeUtils.setReference(TimeUtils.day(1, 1, 2010));
 
@@ -78,7 +78,7 @@ public class PersonTest {
 		secondAddress.setCity("Berlin");
 		secondAddress.setCode("10313");
 
-		addressServiceImpl.createAddress(secondAddress);
+		addressService.createAddress(secondAddress);
 
 		// Second Address supersedes the first one:
 		// - First Address valid in [1-Jan-2010 .. 10-Feb-2010]

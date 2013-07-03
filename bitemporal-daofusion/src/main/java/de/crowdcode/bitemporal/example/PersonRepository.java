@@ -18,11 +18,14 @@
  */
 package de.crowdcode.bitemporal.example;
 
+import java.util.Collection;
+
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
-@Named("PersonRepository")
+@Named("personRepository")
 public class PersonRepository {
 
 	@PersistenceContext
@@ -31,5 +34,17 @@ public class PersonRepository {
 	public Person save(Person person) {
 		em.persist(person);
 		return person;
+	}
+
+	public Integer getAmount() {
+		Query query = em.createQuery("select count(c.id) from PersonImpl c");
+		Number amount = (Number) query.getSingleResult();
+		return amount.intValue();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Person> findAll() {
+		Query query = em.createQuery("select c from PersonImpl c");
+		return query.getResultList();
 	}
 }

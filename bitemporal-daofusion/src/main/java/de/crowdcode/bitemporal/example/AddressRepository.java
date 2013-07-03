@@ -18,14 +18,17 @@
  */
 package de.crowdcode.bitemporal.example;
 
+import java.util.Collection;
+
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Named("AddressRepository")
+@Named("addressRepository")
 public class AddressRepository {
 
 	@PersistenceContext
@@ -34,5 +37,17 @@ public class AddressRepository {
 	public Address save(Address address) {
 		em.persist(address);
 		return address;
+	}
+
+	public Integer getAmount() {
+		Query query = em.createQuery("select count(c.id) from AddressImpl c");
+		Number amount = (Number) query.getSingleResult();
+		return amount.intValue();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Address> findAll() {
+		Query query = em.createQuery("select c from AddressImpl c");
+		return query.getResultList();
 	}
 }
