@@ -69,7 +69,7 @@ public class PersonTest {
 
 		TimeUtils.setReference(TimeUtils.day(1, 1, 2010));
 
-		// First Adresse will be valid from now on (1-Jan-2010 .. end_of_time)
+		// First Address will be valid from now on (1-Jan-2010 .. end_of_time)
 		person.address().set(firstAddress);
 
 		Address secondAddress = new AddressImpl();
@@ -80,9 +80,12 @@ public class PersonTest {
 
 		addressServiceImpl.createAddress(secondAddress);
 
-		// Second Adresse supersedes the first one:
-		// - First Adresse valid in [1-Jan-2010 .. 10-Feb-2010]
-		// - Second Adresse valid in [10-Feb-2010 .. end_of_time]
-		person.address().set(secondAddress, TimeUtils.from(TimeUtils.day(10, 2, 2010)));
+		// Second Address supersedes the first one:
+		// - First Address valid in [1-Jan-2010 .. 10-Feb-2010]
+		// - Second Address valid in [10-Feb-2010 .. end_of_time]
+		person.address().set(secondAddress,
+				TimeUtils.from(TimeUtils.day(10, 2, 2010)));
+
+		// TODO Doing some asserts for the scenes...
 	}
 }
