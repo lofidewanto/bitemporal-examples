@@ -207,6 +207,7 @@
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>2.2.4</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Java Inject -->
@@ -314,6 +315,7 @@
 						<argument>-dbname.0</argument>
 						<argument>testdb</argument>
 					</arguments>
+					<classpathScope>test</classpathScope>
 				</configuration>
 			</plugin>
 		</plugins>

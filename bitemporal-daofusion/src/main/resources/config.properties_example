@@ -17,6 +17,11 @@ db.password=
 # db.username=sa
 # db.password=
 
+# HSQLDB Server DB
+# db.url=jdbc:hsqldb:hsql://localhost/testdb
+# db.username=sa
+# db.password=
+
 # Hibernate
 # hibernate.hbm2ddl.auto=auto
 hibernate.hbm2ddl.auto=create

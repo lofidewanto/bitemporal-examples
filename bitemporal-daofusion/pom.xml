@@ -319,6 +319,28 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>org.hsqldb.server.Server</mainClass>
+					<arguments>
+						<argument>-database.0</argument>
+						<argument>file:target/testdb</argument>
+						<argument>-dbname.0</argument>
+						<argument>testdb</argument>
+					</arguments>
+					<classpathScope>test</classpathScope>
+				</configuration>
+			</plugin>
 		</plugins>
 
 		<pluginManagement>
