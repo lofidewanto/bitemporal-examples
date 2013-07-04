@@ -32,6 +32,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.joda.time.Interval;
 
+import com.anasoft.os.daofusion.bitemporal.BitemporalWrapper;
 import com.anasoft.os.daofusion.bitemporal.WrappedBitemporalProperty;
 import com.anasoft.os.daofusion.bitemporal.WrappedValueAccessor;
 import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
@@ -60,25 +61,41 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	@JoinColumn(name = "person")
 	private final Collection<BitemporalAddressImpl> bitemporalAddresses = new LinkedList<BitemporalAddressImpl>();
 
+	private final Collection<BitemporalWrapper<Boolean>> alive = new LinkedList<BitemporalWrapper<Boolean>>();
+
 	// Use this method for accessing bitemporal trace of Addresses values
 	@Override
 	public WrappedBitemporalProperty<Address, BitemporalAddressImpl> address() {
-		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(bitemporalAddresses,
+		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(
+				bitemporalAddresses,
 				new WrappedValueAccessor<Address, BitemporalAddressImpl>() {
 
 					private static final long serialVersionUID = -3548772720386675459L;
 
 					@Override
-					public BitemporalAddressImpl wrapValue(Address value, Interval validityInterval) {
-						return new BitemporalAddressImpl(value, validityInterval);
+					public BitemporalAddressImpl wrapValue(Address value,
+							Interval validityInterval) {
+						return new BitemporalAddressImpl(value,
+								validityInterval);
 					}
 				});
 	}
 
 	@Override
 	public WrappedBitemporalProperty<Address, BitemporalAddressImpl> alive() {
-		// TODO Auto-generated method stub
-		return null;
+		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(
+				alive,
+				new WrappedValueAccessor<Address, BitemporalAddressImpl>() {
+
+					private static final long serialVersionUID = -3548772720386675459L;
+
+					@Override
+					public BitemporalAddressImpl wrapValue(Address value,
+							Interval validityInterval) {
+						return new BitemporalAddressImpl(value,
+								validityInterval);
+					}
+				});
 	}
 
 	@Override
