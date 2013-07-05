@@ -46,7 +46,7 @@ import com.anasoft.os.daofusion.bitemporal.TimeUtils;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:META-INF/beans.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @Transactional(propagation = Propagation.REQUIRED)
 public class ScenarioTest {
 

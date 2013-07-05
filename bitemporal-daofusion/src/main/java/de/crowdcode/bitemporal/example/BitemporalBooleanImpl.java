@@ -38,6 +38,9 @@ public class BitemporalBooleanImpl extends BitemporalWrapper<Boolean> {
 			CascadeType.PERSIST, CascadeType.MERGE })
 	private Boolean value;
 
+	protected BitemporalBooleanImpl() {
+	}
+
 	public BitemporalBooleanImpl(Boolean value, Interval validityInterval) {
 		super(value, validityInterval);
 	}
