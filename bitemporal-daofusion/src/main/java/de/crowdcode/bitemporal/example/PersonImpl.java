@@ -27,6 +27,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -61,6 +62,7 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	@JoinColumn(name = "person")
 	private final Collection<BitemporalAddressImpl> bitemporalAddresses = new LinkedList<BitemporalAddressImpl>();
 
+	@Transient
 	private final Collection<BitemporalWrapper<Boolean>> alive = new LinkedList<BitemporalWrapper<Boolean>>();
 
 	// Use this method for accessing bitemporal trace of Addresses values

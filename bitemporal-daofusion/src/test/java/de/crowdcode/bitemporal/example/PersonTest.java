@@ -26,6 +26,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.anasoft.os.daofusion.bitemporal.TimeUtils;
@@ -38,9 +39,9 @@ import com.anasoft.os.daofusion.bitemporal.TimeUtils;
  * @version 1.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:de/crowdcode/bitemporal/example/spring-example.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
-@Transactional
+@ContextConfiguration(locations = { "classpath:META-INF/beans.xml" })
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@Transactional(propagation = Propagation.REQUIRED)
 public class PersonTest {
 
 	@Inject
