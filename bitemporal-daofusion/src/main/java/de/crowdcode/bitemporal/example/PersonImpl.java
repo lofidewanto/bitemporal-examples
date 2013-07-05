@@ -27,13 +27,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.joda.time.Interval;
 
-import com.anasoft.os.daofusion.bitemporal.BitemporalWrapper;
 import com.anasoft.os.daofusion.bitemporal.WrappedBitemporalProperty;
 import com.anasoft.os.daofusion.bitemporal.WrappedValueAccessor;
 import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
@@ -62,8 +60,10 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	@JoinColumn(name = "person")
 	private final Collection<BitemporalAddressImpl> bitemporalAddresses = new LinkedList<BitemporalAddressImpl>();
 
-	@Transient
-	private final Collection<BitemporalWrapper<Boolean>> alive = new LinkedList<BitemporalWrapper<Boolean>>();
+	@OneToMany(fetch = FetchType.LAZY)
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	@JoinColumn(name = "person")
+	private final Collection<BitemporalBooleanImpl> alives = new LinkedList<BitemporalBooleanImpl>();
 
 	// Use this method for accessing bitemporal trace of Addresses values
 	@Override
@@ -84,17 +84,17 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	}
 
 	@Override
-	public WrappedBitemporalProperty<Address, BitemporalAddressImpl> alive() {
-		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(
-				alive,
-				new WrappedValueAccessor<Address, BitemporalAddressImpl>() {
+	public WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl> alive() {
+		return new WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl>(
+				alives,
+				new WrappedValueAccessor<Boolean, BitemporalBooleanImpl>() {
 
-					private static final long serialVersionUID = -3548772720386675459L;
+					private static final long serialVersionUID = 5959318387062285749L;
 
 					@Override
-					public BitemporalAddressImpl wrapValue(Address value,
+					public BitemporalBooleanImpl wrapValue(Boolean value,
 							Interval validityInterval) {
-						return new BitemporalAddressImpl(value,
+						return new BitemporalBooleanImpl(value,
 								validityInterval);
 					}
 				});

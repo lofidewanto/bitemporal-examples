@@ -49,7 +49,7 @@ public class AddressImpl extends MutablePersistentEntity implements Address {
 	private String city;
 
 	@ManyToOne(targetEntity = PersonImpl.class)
-	@JoinColumn(nullable = false, updatable = false)
+	@JoinColumn(nullable = true, updatable = false)
 	private Person person;
 
 	@Override

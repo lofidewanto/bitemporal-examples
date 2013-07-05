@@ -8,6 +8,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>de.crowdcode.bitemporal.example.AddressImpl</class>
 		<class>de.crowdcode.bitemporal.example.BitemporalAddressImpl</class>
+		<class>de.crowdcode.bitemporal.example.BitemporalBooleanImpl</class>
 		<class>de.crowdcode.bitemporal.example.PersonImpl</class>
 	</persistence-unit>
 </persistence>

@@ -20,6 +20,7 @@ package de.crowdcode.bitemporal.example;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -81,7 +82,7 @@ public class ScenarioTest {
 
 		personService.createPerson(johnDoe);
 
-		// johnDoe.alive().set(true, TimeUtils.from(TimeUtils.day(3, 4, 1975)));
+		johnDoe.alive().set(true, TimeUtils.from(TimeUtils.day(3, 4, 1975)));
 
 		Address address1 = new AddressImpl();
 		address1.setCity("Smallville");
@@ -111,7 +112,7 @@ public class ScenarioTest {
 		// 1/4/2001 John is killed in an accident, reported by the coroner that
 		// same day
 		TimeUtils.setReference(TimeUtils.day(1, 4, 2001));
-		// johnDoe.alive().set(false);
+		johnDoe.alive().set(false);
 
 		// Asserts...
 		TimeUtils.setReference(TimeUtils.day(1, 1, 2007));
@@ -126,25 +127,32 @@ public class ScenarioTest {
 		addressCheck2.setCode("FL, USA");
 		addressCheck2.setStreet("Some Avenue 773");
 
+		// Alive checks...
 		assertFalse(johnDoe.alive().hasValueOn(TimeUtils.day(1, 1, 1975)));
-		// assertEquals(null, johnDoe.alive().on(TimeUtils.day(3, 4, 1975)));
+		assertTrue((Boolean) johnDoe.alive().on(TimeUtils.day(3, 4, 1975)));
 		assertFalse(johnDoe.alive().hasValueOn(TimeUtils.day(3, 4, 1975),
 				TimeUtils.day(3, 4, 1975)));
-		// assertEquals(null, johnDoe.alive().now());
+		assertFalse((Boolean) johnDoe.alive().now());
 
-		assertEquals(addressCheck1,
-				johnDoe.address().on(TimeUtils.day(3, 4, 1975)));
-		assertEquals(addressCheck2,
-				johnDoe.address().on(TimeUtils.day(26, 8, 1994)));
-		assertEquals(
-				addressCheck1,
-				johnDoe.address().on(TimeUtils.day(26, 8, 1994),
-						TimeUtils.day(26, 8, 1994)));
-		assertEquals(
-				addressCheck2,
-				johnDoe.address().on(TimeUtils.day(26, 8, 1994),
-						TimeUtils.day(27, 12, 1994)));
-		assertEquals(addressCheck2, johnDoe.address().now());
+		// Addresses checks...
+		Address addressValue1 = (Address) johnDoe.address().on(
+				TimeUtils.day(3, 4, 1975));
+		assertEquals(addressCheck1.getCity(), addressValue1.getCity());
+
+		Address addressValue2 = (Address) johnDoe.address().on(
+				TimeUtils.day(26, 8, 1994));
+		assertEquals(addressCheck2.getCity(), addressValue2.getCity());
+
+		Address addressValue3 = (Address) johnDoe.address().on(
+				TimeUtils.day(26, 8, 1994), TimeUtils.day(26, 8, 1994));
+		assertEquals(addressCheck1.getCity(), addressValue3.getCity());
+
+		Address addressValue4 = (Address) johnDoe.address().on(
+				TimeUtils.day(26, 8, 1994), TimeUtils.day(27, 12, 1994));
+		assertEquals(addressCheck2.getCity(), addressValue4.getCity());
+
+		Address addressValue5 = (Address) johnDoe.address().now();
+		assertEquals(addressCheck2.getCity(), addressValue5.getCity());
 
 		System.out.println("The database now looks like this:\n");
 		System.out.println(johnDoe.address().getTrace().toString());
