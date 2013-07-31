@@ -85,6 +85,7 @@ public class ScenarioTest {
 		johnDoe.alive().set(true, TimeUtils.from(TimeUtils.day(3, 4, 1975)));
 
 		Address address1 = new AddressImpl();
+		address1.setPerson(johnDoe);
 		address1.setCity("Smallville");
 		address1.setCode("FL, USA");
 		address1.setStreet("Some Street 8");
@@ -99,6 +100,7 @@ public class ScenarioTest {
 
 		// 27/12/1994 John registers his move
 		Address address2 = new AddressImpl();
+		address2.setPerson(johnDoe);
 		address2.setCity("Bigtown");
 		address2.setCode("FL, USA");
 		address2.setStreet("Some Avenue 773");
@@ -156,5 +158,6 @@ public class ScenarioTest {
 
 		System.out.println("The database now looks like this:\n");
 		System.out.println(johnDoe.address().getTrace().toString());
+		System.out.println(johnDoe.alive().getTrace().toString());
 	}
 }
