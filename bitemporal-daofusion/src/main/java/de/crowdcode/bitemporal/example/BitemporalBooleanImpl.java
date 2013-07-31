@@ -18,9 +18,7 @@
  */
 package de.crowdcode.bitemporal.example;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.joda.time.Interval;
@@ -34,8 +32,6 @@ public class BitemporalBooleanImpl extends BitemporalWrapper<Boolean> {
 
 	private static final long serialVersionUID = 4352161667192517622L;
 
-	@ManyToOne(targetEntity = AddressImpl.class, cascade = {
-			CascadeType.PERSIST, CascadeType.MERGE })
 	private Boolean value;
 
 	protected BitemporalBooleanImpl() {

@@ -63,7 +63,7 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	@OneToMany(fetch = FetchType.LAZY)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "person")
-	private final Collection<BitemporalBooleanImpl> alives = new LinkedList<BitemporalBooleanImpl>();
+	private final Collection<BitemporalBooleanImpl> bitemporalAlives = new LinkedList<BitemporalBooleanImpl>();
 
 	// Use this method for accessing bitemporal trace of Addresses values
 	@Override
@@ -86,7 +86,7 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	@Override
 	public WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl> alive() {
 		return new WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl>(
-				alives,
+				bitemporalAlives,
 				new WrappedValueAccessor<Boolean, BitemporalBooleanImpl>() {
 
 					private static final long serialVersionUID = 5959318387062285749L;
