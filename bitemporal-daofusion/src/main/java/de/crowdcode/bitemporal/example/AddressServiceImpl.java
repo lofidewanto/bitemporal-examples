@@ -23,7 +23,11 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 @Named("addressService")
+@Transactional(propagation = Propagation.REQUIRED)
 public class AddressServiceImpl implements AddressService {
 
 	@Inject

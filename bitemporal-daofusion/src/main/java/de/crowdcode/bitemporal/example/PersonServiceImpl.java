@@ -23,7 +23,11 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 @Named("personService")
+@Transactional(propagation = Propagation.REQUIRED)
 public class PersonServiceImpl implements PersonService {
 
 	@Inject
