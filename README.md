@@ -18,5 +18,5 @@ You can take a look at some examples in this folder:
 
 All the examples use [KissMDA](https://github.com/crowdcode-de/KissMDA) to generate the Java interfaces automatically from the UML model. Using UML makes it easy to explain the examples!
 
-Have fun! 
+Have fun!  
 [Lofi](http://lofidewanto.blogspot.com)
