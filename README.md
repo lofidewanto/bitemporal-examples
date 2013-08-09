@@ -1,7 +1,7 @@
 Bitemporal Examples for Java
 ============================
 
-Bitemporal Examples in Java with OSS Frameworks like:
+Bitemporal Examples in Java with OSS Frameworks:
 
 * Erwin Vervaet (ervacon): https://svn.ervacon.com/public/projects/bitemporal/trunk
 * DAOFusion: http://opensource.anasoft.com/daofusion-site/index.html
