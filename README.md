@@ -16,6 +16,7 @@ You can take a look at some examples in this folder:
 * **non-temporal**: this is an example without temporality, very simple example
 * **record-temporal-envers**: this is a record temporal example using Hibernate Envers
 
-All the examples use KissMDA to generate the Java interfaces automatically from the UML model. Using UML makes it easy to explain the examples!
+All the examples use [KissMDA](https://github.com/crowdcode-de/KissMDA) to generate the Java interfaces automatically from the UML model. Using UML makes it easy to explain the examples!
 
 Have fun! 
+[Lofi](http://lofidewanto.blogspot.com)
