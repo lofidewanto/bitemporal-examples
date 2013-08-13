@@ -73,7 +73,7 @@ public class PersonTest {
 
 		// First Address will be valid from now on (1-Jan-2010 .. end_of_time)
 		// Known on...
-		TimeUtils.setReference(TimeUtils.day(1, 1, 2010));
+		addressService.setTimeReference(TimeUtils.day(1, 1, 2010));
 
 		assertNull(firstAddress.getId());
 		Address createdAddress1 = addressService.createAddressWithPerson(firstAddress, createdPerson);
@@ -104,7 +104,7 @@ public class PersonTest {
 		// - Second Address valid in [10-Feb-2010 .. 13-July-2010]
 		// - Third Address valid in [13-July-2010 .. end_of_time]
 		// Known on...
-		TimeUtils.setReference(TimeUtils.day(27, 7, 2010));
+		addressService.setTimeReference(TimeUtils.day(27, 7, 2010));
 
 		assertNull(thirdAddress.getId());
 		Address createdAddress3 = addressService.createAddressWithPerson(thirdAddress, createdPerson,

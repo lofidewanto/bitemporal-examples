@@ -23,9 +23,12 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.anasoft.os.daofusion.bitemporal.TimeUtils;
 
 @Named("addressService")
 public class AddressServiceImpl implements AddressService {
@@ -76,5 +79,10 @@ public class AddressServiceImpl implements AddressService {
 		Person personFound = personService.findPersonById(person.getId());
 		personFound.address().set(addressCreated, interval);
 		return addressCreated;
+	}
+
+	@Override
+	public void setTimeReference(DateTime reference) {
+		TimeUtils.setReference(reference);
 	}
 }
