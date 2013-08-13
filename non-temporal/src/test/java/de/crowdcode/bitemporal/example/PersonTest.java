@@ -59,7 +59,7 @@ public class PersonTest {
 	private AddressService addressService;
 
 	@Test
-	public void testCreateNonTemporalAdressen() {
+	public void testCreateNonTemporalAddress() {
 		PersonImpl person = new PersonImpl();
 		person.setLastname("Mueller");
 		person.setFirstname("Hans");

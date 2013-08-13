@@ -55,7 +55,7 @@ public class PersonTest {
 	private AddressService addressService;
 
 	@Test
-	public void testCreateBitemporalAdressen() {
+	public void testCreateBitemporalAddress() {
 		PersonImpl person = new PersonImpl();
 		person.setLastname("Mueller");
 		person.setFirstname("Hans");
@@ -87,8 +87,7 @@ public class PersonTest {
 		// Second Address supersedes the first one:
 		// - First Address valid in [1-Jan-2010 .. 10-Feb-2010]
 		// - Second Address valid in [10-Feb-2010 .. end_of_time]
-		person.address().set(secondAddress,
-				TimeUtils.from(TimeUtils.day(10, 2, 2010)));
+		person.address().set(secondAddress, TimeUtils.from(TimeUtils.day(10, 2, 2010)));
 
 		Address thirdAddress = new AddressImpl();
 		thirdAddress.setPerson(person);
@@ -105,26 +104,21 @@ public class PersonTest {
 		// - First Address valid in [1-Jan-2010 .. 10-Feb-2010]
 		// - Second Address valid in [10-Feb-2010 .. 13-July-2010]
 		// - Third Address valid in [13-July-2010 .. end_of_time]
-		person.address().set(thirdAddress,
-				TimeUtils.from(TimeUtils.day(13, 7, 2010)));
+		person.address().set(thirdAddress, TimeUtils.from(TimeUtils.day(13, 7, 2010)));
 
 		// Doing some asserts for the scenes...
-		Address addressValue1 = person.address().on(TimeUtils.day(3, 2, 2010),
-				TimeUtils.day(1, 1, 2010));
+		Address addressValue1 = person.address().on(TimeUtils.day(3, 2, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Koeln", addressValue1.getCity());
 
-		Address addressValue2 = person.address().on(TimeUtils.day(10, 7, 2010),
-				TimeUtils.day(1, 1, 2010));
+		Address addressValue2 = person.address().on(TimeUtils.day(10, 7, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Berlin", addressValue2.getCity());
 
 		// Known on 1-Jan-2010
-		Address addressValue3 = person.address().on(TimeUtils.day(15, 7, 2010),
-				TimeUtils.day(1, 1, 2010));
+		Address addressValue3 = person.address().on(TimeUtils.day(15, 7, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Berlin", addressValue3.getCity());
 
 		// Known on from 27-July-2010
-		Address addressValue4 = person.address().on(TimeUtils.day(15, 7, 2010),
-				TimeUtils.day(31, 7, 2010));
+		Address addressValue4 = person.address().on(TimeUtils.day(15, 7, 2010), TimeUtils.day(31, 7, 2010));
 		assertEquals("Muenster", addressValue4.getCity());
 	}
 }
