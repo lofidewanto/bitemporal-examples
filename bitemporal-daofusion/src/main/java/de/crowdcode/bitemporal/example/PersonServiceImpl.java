@@ -50,4 +50,10 @@ public class PersonServiceImpl implements PersonService {
 	public Collection<Person> findAllPersons() {
 		return personRepository.findAll();
 	}
+
+	@Override
+	public Person findPersonById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

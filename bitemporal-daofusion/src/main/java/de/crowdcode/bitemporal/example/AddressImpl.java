@@ -91,4 +91,14 @@ public class AddressImpl extends MutablePersistentEntity implements Address {
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+	@Override
+	public Long getId() {
+		return super.getId();
+	}
+
+	@Override
+	public void setId(Long id) {
+		super.setId(id);
+	}
 }

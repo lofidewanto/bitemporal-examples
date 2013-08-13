@@ -29,7 +29,7 @@ import com.anasoft.os.daofusion.bitemporal.Bitemporal;
 import com.anasoft.os.daofusion.bitemporal.BitemporalWrapper;
 
 /**
- * BitemporalAdresse implementation.
+ * BitemporalAddress implementation.
  * 
  * @author Lofi Dewanto
  * @since 1.0.0

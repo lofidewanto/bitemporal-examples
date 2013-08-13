@@ -27,27 +27,43 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named("addressService")
-@Transactional(propagation = Propagation.REQUIRED)
 public class AddressServiceImpl implements AddressService {
 
 	@Inject
 	@Named("addressRepository")
 	private AddressRepository addressRepository;
 
+	@Inject
+	@Named("personService")
+	private PersonService personService;
+
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Address createAddress(Address address) {
 		Address addressCreated = addressRepository.save(address);
 		return addressCreated;
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public Integer getAmountOfAddress() {
 		Integer amount = addressRepository.getAmount();
 		return amount;
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public Collection<Address> findAllAddresses() {
 		return addressRepository.findAll();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Address createAddressWithPerson(Address address, Person person) {
+		Address addressCreated = addressRepository.save(address);
+		Person personFound = personService.findPersonById(person.getId());
+		personFound.address().set(addressCreated);
+		return addressCreated;
 	}
 }

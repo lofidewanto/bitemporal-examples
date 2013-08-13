@@ -50,4 +50,10 @@ public class AddressRepository {
 		Query query = em.createQuery("select c from AddressImpl c");
 		return query.getResultList();
 	}
+
+	public Address findById(Long id) {
+		Query query = em.createQuery("select c from AddressImpl c where c.id = :id");
+		query.setParameter("id", id);
+		return (Address) query.getSingleResult();
+	}
 }

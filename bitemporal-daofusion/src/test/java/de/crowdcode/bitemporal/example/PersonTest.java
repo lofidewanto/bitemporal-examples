@@ -19,6 +19,8 @@
 package de.crowdcode.bitemporal.example;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -54,14 +56,18 @@ public class PersonTest {
 	@Named("addressService")
 	private AddressService addressService;
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void testCreateBitemporalAddress() {
-		PersonImpl person = new PersonImpl();
+	public void testCreateBitemporalAddresses() {
+		Person person = new PersonImpl();
 		person.setLastname("Mueller");
 		person.setFirstname("Hans");
 
-		personService.createPerson(person);
+		assertNull(person.getId());
+		Person createdPerson = personService.createPerson(person);
+		assertNotNull(createdPerson.getId());
 
+		// First address
 		Address firstAddress = new AddressImpl();
 		firstAddress.setPerson(person);
 		firstAddress.setStreet("Koeln 21");
@@ -107,18 +113,18 @@ public class PersonTest {
 		person.address().set(thirdAddress, TimeUtils.from(TimeUtils.day(13, 7, 2010)));
 
 		// Doing some asserts for the scenes...
-		Address addressValue1 = person.address().on(TimeUtils.day(3, 2, 2010), TimeUtils.day(1, 1, 2010));
+		Address addressValue1 = (Address) person.address().on(TimeUtils.day(3, 2, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Koeln", addressValue1.getCity());
 
-		Address addressValue2 = person.address().on(TimeUtils.day(10, 7, 2010), TimeUtils.day(1, 1, 2010));
+		Address addressValue2 = (Address) person.address().on(TimeUtils.day(10, 7, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Berlin", addressValue2.getCity());
 
 		// Known on 1-Jan-2010
-		Address addressValue3 = person.address().on(TimeUtils.day(15, 7, 2010), TimeUtils.day(1, 1, 2010));
+		Address addressValue3 = (Address) person.address().on(TimeUtils.day(15, 7, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Berlin", addressValue3.getCity());
 
 		// Known on from 27-July-2010
-		Address addressValue4 = person.address().on(TimeUtils.day(15, 7, 2010), TimeUtils.day(31, 7, 2010));
+		Address addressValue4 = (Address) person.address().on(TimeUtils.day(15, 7, 2010), TimeUtils.day(31, 7, 2010));
 		assertEquals("Muenster", addressValue4.getCity());
 	}
 }

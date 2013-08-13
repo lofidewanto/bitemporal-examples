@@ -28,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.joda.time.Interval;
@@ -68,34 +69,28 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	// Use this method for accessing bitemporal trace of Addresses values
 	@Override
 	public WrappedBitemporalProperty<Address, BitemporalAddressImpl> address() {
-		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(
-				bitemporalAddresses,
+		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(bitemporalAddresses,
 				new WrappedValueAccessor<Address, BitemporalAddressImpl>() {
 
 					private static final long serialVersionUID = -3548772720386675459L;
 
 					@Override
-					public BitemporalAddressImpl wrapValue(Address value,
-							Interval validityInterval) {
-						return new BitemporalAddressImpl(value,
-								validityInterval);
+					public BitemporalAddressImpl wrapValue(Address value, Interval validityInterval) {
+						return new BitemporalAddressImpl(value, validityInterval);
 					}
 				});
 	}
 
 	@Override
 	public WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl> alive() {
-		return new WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl>(
-				bitemporalAlives,
+		return new WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl>(bitemporalAlives,
 				new WrappedValueAccessor<Boolean, BitemporalBooleanImpl>() {
 
 					private static final long serialVersionUID = 5959318387062285749L;
 
 					@Override
-					public BitemporalBooleanImpl wrapValue(Boolean value,
-							Interval validityInterval) {
-						return new BitemporalBooleanImpl(value,
-								validityInterval);
+					public BitemporalBooleanImpl wrapValue(Boolean value, Interval validityInterval) {
+						return new BitemporalBooleanImpl(value, validityInterval);
 					}
 				});
 	}
@@ -112,13 +107,12 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 
 	@Override
 	public Collection<Address> getAddresses() {
-		// TODO Address getter
-		return null;
+		throw new NotImplementedException("Please use the method address()!");
 	}
 
 	@Override
 	public void addAddresses(Address address) {
-		// TODO Address adder
+		this.address().set(address);
 	}
 
 	@Override
@@ -129,5 +123,15 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	@Override
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
+	}
+
+	@Override
+	public Long getId() {
+		return super.getId();
+	}
+
+	@Override
+	public void setId(Long id) {
+		super.setId(id);
 	}
 }
