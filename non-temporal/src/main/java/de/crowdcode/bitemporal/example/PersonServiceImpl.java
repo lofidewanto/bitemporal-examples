@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named("personService")
-@Transactional(propagation = Propagation.REQUIRED)
 public class PersonServiceImpl implements PersonService {
 
 	@Inject
@@ -35,24 +34,28 @@ public class PersonServiceImpl implements PersonService {
 	private PersonRepository personRepository;
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Person createPerson(Person person) {
 		Person personCreated = personRepository.save(person);
 		return personCreated;
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public Integer getAmountOfPerson() {
 		Integer amount = personRepository.getAmount();
 		return amount;
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public Collection<Person> findAllPersons() {
 		Collection<Person> persons = personRepository.findAll();
 		return persons;
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public Person findPersonById(Long id) {
 		Person person = personRepository.findById(id);
 		return person;
