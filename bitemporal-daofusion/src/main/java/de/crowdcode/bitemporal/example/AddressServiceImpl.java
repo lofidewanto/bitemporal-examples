@@ -23,6 +23,7 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.joda.time.Interval;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +65,16 @@ public class AddressServiceImpl implements AddressService {
 		Address addressCreated = addressRepository.save(address);
 		Person personFound = personService.findPersonById(person.getId());
 		personFound.address().set(addressCreated);
+		return addressCreated;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Address createAddressWithPerson(Address address, Person person, Interval interval) {
+		Address addressCreated = addressRepository.save(address);
+		Person personFound = personService.findPersonById(person.getId());
+		personFound.address().set(addressCreated, interval);
 		return addressCreated;
 	}
 }

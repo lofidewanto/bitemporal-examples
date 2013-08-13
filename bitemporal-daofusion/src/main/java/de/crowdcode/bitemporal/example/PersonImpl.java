@@ -66,7 +66,6 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 	@JoinColumn(name = "person")
 	private final Collection<BitemporalBooleanImpl> bitemporalAlives = new LinkedList<BitemporalBooleanImpl>();
 
-	// Use this method for accessing bitemporal trace of Addresses values
 	@Override
 	public WrappedBitemporalProperty<Address, BitemporalAddressImpl> address() {
 		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(bitemporalAddresses,
@@ -107,7 +106,7 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 
 	@Override
 	public Collection<Address> getAddresses() {
-		throw new NotImplementedException("Please use the method address()!");
+		throw new NotImplementedException("Bitemporal: please use the method address()!");
 	}
 
 	@Override

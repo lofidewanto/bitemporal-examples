@@ -23,6 +23,7 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,13 +48,24 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public Collection<Person> findAllPersons() {
-		return personRepository.findAll();
+		Collection<Person> persons = personRepository.findAll();
+		return persons;
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public Person findPersonById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Person person = personRepository.findById(id);
+		return person;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public Address findAddressByPersonIdOnDates(Long personId, DateTime validOn, DateTime knownOn) {
+		Person person = personRepository.findById(personId);
+		Address address = (Address) person.address().on(validOn, knownOn);
+		return address;
 	}
 }

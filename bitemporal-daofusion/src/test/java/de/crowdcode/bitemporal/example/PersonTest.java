@@ -30,7 +30,6 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.anasoft.os.daofusion.bitemporal.TimeUtils;
@@ -44,8 +43,8 @@ import com.anasoft.os.daofusion.bitemporal.TimeUtils;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:META-INF/beans.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
-@Transactional(propagation = Propagation.REQUIRED)
+@TransactionConfiguration(defaultRollback = true)
+@Transactional
 public class PersonTest {
 
 	@Inject
@@ -56,7 +55,6 @@ public class PersonTest {
 	@Named("addressService")
 	private AddressService addressService;
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testCreateBitemporalAddresses() {
 		Person person = new PersonImpl();
@@ -67,20 +65,19 @@ public class PersonTest {
 		Person createdPerson = personService.createPerson(person);
 		assertNotNull(createdPerson.getId());
 
-		// First address
 		Address firstAddress = new AddressImpl();
 		firstAddress.setPerson(person);
 		firstAddress.setStreet("Koeln 21");
 		firstAddress.setCity("Koeln");
 		firstAddress.setCode("50698");
 
-		addressService.createAddress(firstAddress);
-
+		// First Address will be valid from now on (1-Jan-2010 .. end_of_time)
 		// Known on...
 		TimeUtils.setReference(TimeUtils.day(1, 1, 2010));
 
-		// First Address will be valid from now on (1-Jan-2010 .. end_of_time)
-		person.address().set(firstAddress);
+		assertNull(firstAddress.getId());
+		Address createdAddress1 = addressService.createAddressWithPerson(firstAddress, createdPerson);
+		assertNotNull(createdAddress1.getId());
 
 		Address secondAddress = new AddressImpl();
 		secondAddress.setPerson(person);
@@ -88,12 +85,13 @@ public class PersonTest {
 		secondAddress.setCity("Berlin");
 		secondAddress.setCode("10313");
 
-		addressService.createAddress(secondAddress);
-
 		// Second Address supersedes the first one:
 		// - First Address valid in [1-Jan-2010 .. 10-Feb-2010]
 		// - Second Address valid in [10-Feb-2010 .. end_of_time]
-		person.address().set(secondAddress, TimeUtils.from(TimeUtils.day(10, 2, 2010)));
+		assertNull(secondAddress.getId());
+		Address createdAddress2 = addressService.createAddressWithPerson(secondAddress, createdPerson,
+				TimeUtils.from(TimeUtils.day(10, 2, 2010)));
+		assertNotNull(createdAddress2.getId());
 
 		Address thirdAddress = new AddressImpl();
 		thirdAddress.setPerson(person);
@@ -101,30 +99,38 @@ public class PersonTest {
 		thirdAddress.setCity("Muenster");
 		thirdAddress.setCode("43744");
 
-		addressService.createAddress(thirdAddress);
-
-		// Known on...
-		TimeUtils.setReference(TimeUtils.day(27, 7, 2010));
-
 		// Third Address supersedes the second one but known later:
 		// - First Address valid in [1-Jan-2010 .. 10-Feb-2010]
 		// - Second Address valid in [10-Feb-2010 .. 13-July-2010]
 		// - Third Address valid in [13-July-2010 .. end_of_time]
-		person.address().set(thirdAddress, TimeUtils.from(TimeUtils.day(13, 7, 2010)));
+		// Known on...
+		TimeUtils.setReference(TimeUtils.day(27, 7, 2010));
+
+		assertNull(thirdAddress.getId());
+		Address createdAddress3 = addressService.createAddressWithPerson(thirdAddress, createdPerson,
+				TimeUtils.from(TimeUtils.day(13, 7, 2010)));
+		assertNotNull(createdAddress3.getId());
+
+		// Update person for the relation to the address
+		Person updatedPerson = personService.findPersonById(createdPerson.getId());
 
 		// Doing some asserts for the scenes...
-		Address addressValue1 = (Address) person.address().on(TimeUtils.day(3, 2, 2010), TimeUtils.day(1, 1, 2010));
+		Address addressValue1 = personService.findAddressByPersonIdOnDates(updatedPerson.getId(),
+				TimeUtils.day(3, 2, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Koeln", addressValue1.getCity());
 
-		Address addressValue2 = (Address) person.address().on(TimeUtils.day(10, 7, 2010), TimeUtils.day(1, 1, 2010));
+		Address addressValue2 = personService.findAddressByPersonIdOnDates(updatedPerson.getId(),
+				TimeUtils.day(10, 7, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Berlin", addressValue2.getCity());
 
 		// Known on 1-Jan-2010
-		Address addressValue3 = (Address) person.address().on(TimeUtils.day(15, 7, 2010), TimeUtils.day(1, 1, 2010));
+		Address addressValue3 = personService.findAddressByPersonIdOnDates(updatedPerson.getId(),
+				TimeUtils.day(15, 7, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Berlin", addressValue3.getCity());
 
 		// Known on from 27-July-2010
-		Address addressValue4 = (Address) person.address().on(TimeUtils.day(15, 7, 2010), TimeUtils.day(31, 7, 2010));
+		Address addressValue4 = personService.findAddressByPersonIdOnDates(updatedPerson.getId(),
+				TimeUtils.day(15, 7, 2010), TimeUtils.day(31, 7, 2010));
 		assertEquals("Muenster", addressValue4.getCity());
 	}
 }
