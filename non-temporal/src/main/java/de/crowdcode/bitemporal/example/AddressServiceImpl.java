@@ -34,6 +34,10 @@ public class AddressServiceImpl implements AddressService {
 	@Named("addressRepository")
 	private AddressRepository addressRepository;
 
+	@Inject
+	@Named("personService")
+	private PersonService personService;
+
 	@Override
 	public Address createAddress(Address address) {
 		Address addressCreated = addressRepository.save(address);
@@ -48,6 +52,15 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public Collection<Address> findAllAddresses() {
-		return addressRepository.findAll();
+		Collection<Address> addresses = addressRepository.findAll();
+		return addresses;
+	}
+
+	@Override
+	public Address createAddressWithPerson(Address address, Person person) {
+		Address addressCreated = addressRepository.save(address);
+		Person personFound = personService.findPersonById(person.getId());
+		personFound.setAddress(addressCreated);
+		return addressCreated;
 	}
 }

@@ -19,6 +19,8 @@
 package de.crowdcode.bitemporal.example;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.Collection;
 
@@ -44,7 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:META-INF/beans.xml" })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@TransactionConfiguration(defaultRollback = true)
 @Transactional(propagation = Propagation.REQUIRED)
 public class PersonTest {
 
@@ -59,12 +61,14 @@ public class PersonTest {
 	private AddressService addressService;
 
 	@Test
-	public void testCreateNonTemporalAddress() {
-		PersonImpl person = new PersonImpl();
+	public void testCreateNonTemporalAddresses() {
+		Person person = new PersonImpl();
 		person.setLastname("Mueller");
 		person.setFirstname("Hans");
 
-		personService.createPerson(person);
+		assertNull(person.getId());
+		Person createdPerson = personService.createPerson(person);
+		assertNotNull(createdPerson.getId());
 
 		Address firstAddress = new AddressImpl();
 		firstAddress.setPerson(person);
@@ -72,14 +76,17 @@ public class PersonTest {
 		firstAddress.setCity("Koeln");
 		firstAddress.setCode("50698");
 
-		addressService.createAddress(firstAddress);
-
 		// First address
-		person.setAddress(firstAddress);
+		assertNull(firstAddress.getId());
+		Address createdAddress1 = addressService.createAddressWithPerson(firstAddress, createdPerson);
+		assertNotNull(createdAddress1.getId());
+
+		// Update person for the relation to the address
+		Person updatedPerson = personService.findPersonById(createdPerson.getId());
 
 		// Assert
-		Address firstCheckedAddress = person.getAddress();
-		assertEquals(firstAddress, firstCheckedAddress);
+		Address firstCheckedAddress = updatedPerson.getAddress();
+		assertEquals(firstAddress.getCity(), firstCheckedAddress.getCity());
 
 		Address secondAddress = new AddressImpl();
 		secondAddress.setPerson(person);
@@ -87,23 +94,23 @@ public class PersonTest {
 		secondAddress.setCity("Berlin");
 		secondAddress.setCode("10313");
 
-		addressService.createAddress(secondAddress);
-
 		// Second address supersedes the first one
 		// The person has only ONE current address
-		person.setAddress(secondAddress);
+		assertNull(secondAddress.getId());
+		Address createdAddress2 = addressService.createAddressWithPerson(secondAddress, createdPerson);
+		assertNotNull(createdAddress2.getId());
+
+		// Update person for the relation to the address
+		updatedPerson = personService.findPersonById(createdPerson.getId());
 
 		// Assert
-		Address secondCheckedAddress = person.getAddress();
-		assertEquals(secondAddress, secondCheckedAddress);
+		Address secondCheckedAddress = updatedPerson.getAddress();
 		assertEquals(secondAddress.getCity(), secondCheckedAddress.getCity());
 
-		Address secondCheckedAddressMethod = person.address();
-		assertEquals(secondAddress, secondCheckedAddressMethod);
+		Address secondCheckedAddressMethod = updatedPerson.address();
 		assertEquals(secondAddress.getCity(), secondCheckedAddressMethod.getCity());
 
-		Address secondCheckedAddressAlive = person.alive();
-		assertEquals(secondAddress, secondCheckedAddressAlive);
+		Address secondCheckedAddressAlive = updatedPerson.alive();
 		assertEquals(secondAddress.getCity(), secondCheckedAddressAlive.getCity());
 
 		// Assert amount of object
@@ -113,19 +120,19 @@ public class PersonTest {
 		Integer amountOfAddress = addressService.getAmountOfAddress();
 		assertEquals(2, amountOfAddress.intValue());
 
-		Address currentAddress = person.getAddress();
+		Address currentAddress = updatedPerson.getAddress();
 		assertEquals("Berlin", currentAddress.getCity());
 
 		// Show in logger
 		Collection<Person> persons = personService.findAllPersons();
 		for (Person person2 : persons) {
-			logger.info("XXX - Person: " + person2.getFirstname());
-			logger.info("XXX - Person.address: " + person2.getAddress().getCity());
+			logger.info("XXX - Person.firstname: " + person2.getFirstname());
+			logger.info("XXX - Person.address.city: " + person2.getAddress().getCity());
 		}
 		Collection<Address> addresses = addressService.findAllAddresses();
 		for (Address address : addresses) {
-			logger.info("YYY - Address: " + address.getCity());
-			logger.info("YYY - Address.person: " + address.getPerson().getFirstname());
+			logger.info("YYY - Address.city: " + address.getCity());
+			logger.info("YYY - Address.person.firstname: " + address.getPerson().getFirstname());
 		}
 	}
 

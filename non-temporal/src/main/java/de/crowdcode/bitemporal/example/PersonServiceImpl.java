@@ -48,6 +48,13 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	public Collection<Person> findAllPersons() {
-		return personRepository.findAll();
+		Collection<Person> persons = personRepository.findAll();
+		return persons;
+	}
+
+	@Override
+	public Person findPersonById(Long id) {
+		Person person = personRepository.findById(id);
+		return person;
 	}
 }

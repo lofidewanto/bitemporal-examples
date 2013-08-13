@@ -40,7 +40,6 @@ public class AddressImpl implements Address, Serializable {
 
 	private static final long serialVersionUID = -1006036224536880106L;
 
-	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -95,5 +94,15 @@ public class AddressImpl implements Address, Serializable {
 	@Override
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

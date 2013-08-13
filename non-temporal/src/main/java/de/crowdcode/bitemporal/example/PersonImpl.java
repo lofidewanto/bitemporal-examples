@@ -41,7 +41,6 @@ public class PersonImpl implements Person, Serializable {
 
 	private static final long serialVersionUID = 2909659022959145389L;
 
-	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -94,5 +93,15 @@ public class PersonImpl implements Person, Serializable {
 	@Override
 	public Address alive() {
 		return getAddress();
+	}
+
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
