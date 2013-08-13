@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNull;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -54,6 +55,11 @@ public class PersonTest {
 	@Inject
 	@Named("addressService")
 	private AddressService addressService;
+
+	@After
+	public void tearDown() throws Exception {
+		TimeUtils.clearReference();
+	}
 
 	@Test
 	public void testCreateBitemporalAddresses() {
