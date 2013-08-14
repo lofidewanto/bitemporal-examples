@@ -27,6 +27,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
 /**
  * Address implementation.
  * 
@@ -36,6 +39,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "address")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class AddressImpl implements Address, Serializable {
 
 	private static final long serialVersionUID = -1006036224536880106L;
