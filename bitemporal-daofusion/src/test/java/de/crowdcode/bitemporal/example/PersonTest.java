@@ -82,7 +82,8 @@ public class PersonTest {
 		addressService.setTimeReference(TimeUtils.day(1, 1, 2010));
 
 		assertNull(firstAddress.getId());
-		Address createdAddress1 = addressService.createAddressWithPerson(firstAddress, createdPerson);
+		Address createdAddress1 = addressService.createAddressWithPerson(
+				firstAddress, createdPerson);
 		assertNotNull(createdAddress1.getId());
 
 		Address secondAddress = new AddressImpl();
@@ -95,7 +96,8 @@ public class PersonTest {
 		// - First Address valid in [1-Jan-2010 .. 10-Feb-2010]
 		// - Second Address valid in [10-Feb-2010 .. end_of_time]
 		assertNull(secondAddress.getId());
-		Address createdAddress2 = addressService.createAddressWithPerson(secondAddress, createdPerson,
+		Address createdAddress2 = addressService.createAddressWithPerson(
+				secondAddress, createdPerson,
 				TimeUtils.from(TimeUtils.day(10, 2, 2010)));
 		assertNotNull(createdAddress2.getId());
 
@@ -113,29 +115,31 @@ public class PersonTest {
 		addressService.setTimeReference(TimeUtils.day(27, 7, 2010));
 
 		assertNull(thirdAddress.getId());
-		Address createdAddress3 = addressService.createAddressWithPerson(thirdAddress, createdPerson,
+		Address createdAddress3 = addressService.createAddressWithPerson(
+				thirdAddress, createdPerson,
 				TimeUtils.from(TimeUtils.day(13, 7, 2010)));
 		assertNotNull(createdAddress3.getId());
 
 		// Update person for the relation to the address
-		Person updatedPerson = personService.findPersonById(createdPerson.getId());
+		Person updatedPerson = personService
+				.findPersonByIdWithAddresses(createdPerson.getId());
 
 		// Doing some asserts for the scenes...
-		Address addressValue1 = personService.findAddressByPersonIdOnDates(updatedPerson.getId(),
+		Address addressValue1 = (Address) updatedPerson.address().on(
 				TimeUtils.day(3, 2, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Koeln", addressValue1.getCity());
 
-		Address addressValue2 = personService.findAddressByPersonIdOnDates(updatedPerson.getId(),
+		Address addressValue2 = (Address) updatedPerson.address().on(
 				TimeUtils.day(10, 7, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Berlin", addressValue2.getCity());
 
 		// Known on 1-Jan-2010
-		Address addressValue3 = personService.findAddressByPersonIdOnDates(updatedPerson.getId(),
+		Address addressValue3 = (Address) updatedPerson.address().on(
 				TimeUtils.day(15, 7, 2010), TimeUtils.day(1, 1, 2010));
 		assertEquals("Berlin", addressValue3.getCity());
 
 		// Known on from 27-July-2010
-		Address addressValue4 = personService.findAddressByPersonIdOnDates(updatedPerson.getId(),
+		Address addressValue4 = (Address) updatedPerson.address().on(
 				TimeUtils.day(15, 7, 2010), TimeUtils.day(31, 7, 2010));
 		assertEquals("Muenster", addressValue4.getCity());
 	}

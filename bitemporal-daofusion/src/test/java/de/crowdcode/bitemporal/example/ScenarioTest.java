@@ -36,7 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.anasoft.os.daofusion.bitemporal.TimeUtils;
 
 /**
- * Scenario Unit test for Bitemporality. Taken from https://svn.ervacon.com/public/projects/bitemporal/trunk
+ * Scenario Unit test for Bitemporality. Taken from
+ * https://svn.ervacon.com/public/projects/bitemporal/trunk
  * 
  * @author Lofi Dewanto
  * @since 1.0.0
@@ -62,8 +63,10 @@ public class ScenarioTest {
 	}
 
 	/**
-	 * The example scenarion described on Wikipedia: http://en.wikipedia.org/wiki/Temporal_database
+	 * The example scenarion described on Wikipedia:
+	 * http://en.wikipedia.org/wiki/Temporal_database
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testScenario() {
 		// 3/4/1975 John Doe is born
@@ -76,7 +79,8 @@ public class ScenarioTest {
 		johnDoe.setFirstname("John");
 		johnDoe.setLastname("Doe");
 
-		johnDoe = personService.createPerson(johnDoe, true, TimeUtils.from(TimeUtils.day(3, 4, 1975)));
+		johnDoe = personService.createPerson(johnDoe, true,
+				TimeUtils.from(TimeUtils.day(3, 4, 1975)));
 
 		Address address1 = new AddressImpl();
 		address1.setPerson(johnDoe);
@@ -84,7 +88,8 @@ public class ScenarioTest {
 		address1.setCode("FL, USA");
 		address1.setStreet("Some Street 8");
 
-		address1 = addressService.createAddressWithPerson(address1, johnDoe, TimeUtils.from(TimeUtils.day(3, 4, 1975)));
+		address1 = addressService.createAddressWithPerson(address1, johnDoe,
+				TimeUtils.from(TimeUtils.day(3, 4, 1975)));
 
 		// 26/8/1994 John moves to Bigtown, but forgets to register
 		// nothing happens
@@ -98,14 +103,17 @@ public class ScenarioTest {
 		address2.setCode("FL, USA");
 		address2.setStreet("Some Avenue 773");
 
-		address2 = addressService
-				.createAddressWithPerson(address2, johnDoe, TimeUtils.from(TimeUtils.day(26, 8, 1994)));
+		address2 = addressService.createAddressWithPerson(address2, johnDoe,
+				TimeUtils.from(TimeUtils.day(26, 8, 1994)));
 
 		// 1/4/2001 John is killed in an accident, reported by the coroner that
 		// same day
 		addressService.setTimeReference(TimeUtils.day(1, 4, 2001));
 
-		personService.setAliveByPerson(johnDoe, false);
+		// Update John Doe with alives
+		johnDoe = personService.findPersonByIdWithAlives(johnDoe.getId());
+		johnDoe.alive().set(false);
+		johnDoe = personService.updatePerson(johnDoe);
 
 		// Asserts...
 		addressService.setTimeReference(TimeUtils.day(1, 1, 2007));
@@ -120,33 +128,44 @@ public class ScenarioTest {
 		addressCheck2.setCode("FL, USA");
 		addressCheck2.setStreet("Some Avenue 773");
 
-		// Update John Doe
-		johnDoe = personService.findPersonById(johnDoe.getId());
+		// Update John Doe with alives
+		johnDoe = personService.findPersonByIdWithAlives(johnDoe.getId());
 
 		// Alive checks...
 		assertFalse(johnDoe.alive().hasValueOn(TimeUtils.day(1, 1, 1975)));
 		assertTrue((Boolean) johnDoe.alive().on(TimeUtils.day(3, 4, 1975)));
-		assertFalse(johnDoe.alive().hasValueOn(TimeUtils.day(3, 4, 1975), TimeUtils.day(3, 4, 1975)));
+		assertFalse(johnDoe.alive().hasValueOn(TimeUtils.day(3, 4, 1975),
+				TimeUtils.day(3, 4, 1975)));
 		assertFalse((Boolean) johnDoe.alive().now());
 
+		System.out.println("The database with alives now looks like this:\n");
+		System.out.println(johnDoe.alive().getTrace().toString());
+
+		// Update John Doe with addresses
+		johnDoe = personService.findPersonByIdWithAddresses(johnDoe.getId());
+
 		// Addresses checks...
-		Address addressValue1 = (Address) johnDoe.address().on(TimeUtils.day(3, 4, 1975));
+		Address addressValue1 = (Address) johnDoe.address().on(
+				TimeUtils.day(3, 4, 1975));
 		assertEquals(addressCheck1.getCity(), addressValue1.getCity());
 
-		Address addressValue2 = (Address) johnDoe.address().on(TimeUtils.day(26, 8, 1994));
+		Address addressValue2 = (Address) johnDoe.address().on(
+				TimeUtils.day(26, 8, 1994));
 		assertEquals(addressCheck2.getCity(), addressValue2.getCity());
 
-		Address addressValue3 = (Address) johnDoe.address().on(TimeUtils.day(26, 8, 1994), TimeUtils.day(26, 8, 1994));
+		Address addressValue3 = (Address) johnDoe.address().on(
+				TimeUtils.day(26, 8, 1994), TimeUtils.day(26, 8, 1994));
 		assertEquals(addressCheck1.getCity(), addressValue3.getCity());
 
-		Address addressValue4 = (Address) johnDoe.address().on(TimeUtils.day(26, 8, 1994), TimeUtils.day(27, 12, 1994));
+		Address addressValue4 = (Address) johnDoe.address().on(
+				TimeUtils.day(26, 8, 1994), TimeUtils.day(27, 12, 1994));
 		assertEquals(addressCheck2.getCity(), addressValue4.getCity());
 
 		Address addressValue5 = (Address) johnDoe.address().now();
 		assertEquals(addressCheck2.getCity(), addressValue5.getCity());
 
-		System.out.println("The database now looks like this:\n");
+		System.out
+				.println("The database with addresses now looks like this:\n");
 		System.out.println(johnDoe.address().getTrace().toString());
-		System.out.println(johnDoe.alive().getTrace().toString());
 	}
 }

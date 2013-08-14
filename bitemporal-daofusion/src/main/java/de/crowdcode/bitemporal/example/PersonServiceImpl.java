@@ -23,12 +23,9 @@ import java.util.Collection;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.anasoft.os.daofusion.bitemporal.WrappedBitemporalProperty;
 
 @Named("personService")
 public class PersonServiceImpl implements PersonService {
@@ -65,14 +62,6 @@ public class PersonServiceImpl implements PersonService {
 		return person;
 	}
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
-	public Address findAddressByPersonIdOnDates(Long personId, DateTime validOn, DateTime knownOn) {
-		Person person = personRepository.findById(personId);
-		Address address = (Address) person.address().on(validOn, knownOn);
-		return address;
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -82,51 +71,24 @@ public class PersonServiceImpl implements PersonService {
 		return personCreated;
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public Person findPersonByIdWithAddresses(Long id) {
+		Person person = personRepository.findByIdWithBitemporalAddresses(id);
+		return person;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public Person findPersonByIdWithAlives(Long id) {
+		Person person = personRepository.findByIdWithBitemporalAlives(id);
+		return person;
+	}
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void setAliveByPerson(Person person, Boolean isAlive, Interval interval) {
-		Person personFound = personRepository.findById(person.getId());
-		personFound.alive().set(isAlive, interval);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void setAliveByPerson(Person person, Boolean isAlive) {
-		Person personFound = personRepository.findById(person.getId());
-		personFound.alive().set(isAlive);
-	}
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
-	public Boolean isAliveOnByPerson(Person person, DateTime validOn) {
-		Person personFound = personRepository.findById(person.getId());
-		Boolean isAlive = (Boolean) personFound.alive().on(validOn);
-		return isAlive;
-	}
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
-	public Boolean isAliveOnByPerson(Person person, DateTime validOn, DateTime knownOn) {
-		Person personFound = personRepository.findById(person.getId());
-		Boolean isAlive = (Boolean) personFound.alive().on(validOn, knownOn);
-		return isAlive;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
-	public WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl> getAlivesByPerson(Person person) {
-		Person personFound = personRepository.findById(person.getId());
-		return personFound.alive();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
-	public WrappedBitemporalProperty<Address, BitemporalAddressImpl> getAdressesByPerson(Person person) {
-		Person personFound = personRepository.findById(person.getId());
-		return personFound.address();
+	public Person updatePerson(Person person) {
+		Person personUpdated = personRepository.update(person);
+		return personUpdated;
 	}
 }

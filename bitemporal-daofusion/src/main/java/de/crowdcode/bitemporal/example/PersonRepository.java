@@ -36,6 +36,11 @@ public class PersonRepository {
 		return person;
 	}
 
+	public Person update(Person person) {
+		em.merge(person);
+		return person;
+	}
+
 	public Integer getAmount() {
 		Query query = em.createQuery("select count(c.id) from PersonImpl c");
 		Number amount = (Number) query.getSingleResult();
@@ -49,7 +54,24 @@ public class PersonRepository {
 	}
 
 	public Person findById(Long id) {
-		Query query = em.createQuery("select c from PersonImpl c where c.id = :id");
+		Query query = em.createQuery("select c from PersonImpl c "
+				+ "where c.id = :id");
+		query.setParameter("id", id);
+		return (Person) query.getSingleResult();
+	}
+
+	public Person findByIdWithBitemporalAddresses(Long id) {
+		Query query = em
+				.createQuery("select c from PersonImpl c "
+						+ "left join fetch c.bitemporalAddresses "
+						+ "where c.id = :id");
+		query.setParameter("id", id);
+		return (Person) query.getSingleResult();
+	}
+
+	public Person findByIdWithBitemporalAlives(Long id) {
+		Query query = em.createQuery("select c from PersonImpl c "
+				+ "left join fetch c.bitemporalAlives " + "where c.id = :id");
 		query.setParameter("id", id);
 		return (Person) query.getSingleResult();
 	}
