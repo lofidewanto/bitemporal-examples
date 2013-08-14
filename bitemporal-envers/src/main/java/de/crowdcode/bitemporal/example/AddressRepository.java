@@ -25,6 +25,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.envers.AuditReader;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -33,6 +34,8 @@ public class AddressRepository {
 
 	@PersistenceContext
 	private EntityManager em;
+
+	private AuditReader ar;
 
 	public Address save(Address address) {
 		em.persist(address);
@@ -55,5 +58,11 @@ public class AddressRepository {
 		Query query = em.createQuery("select c from AddressImpl c where c.id = :id");
 		query.setParameter("id", id);
 		return (Address) query.getSingleResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Address> findAuditedAdressesWithRevision(Long revisionNumber) {
+		Collection<Address> auditedAddresses = ar.createQuery().forEntitiesAtRevision(Address.class, 1).getResultList();
+		return auditedAddresses;
 	}
 }
