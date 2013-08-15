@@ -45,11 +45,12 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:META-INF/beans.xml" })
-@TransactionConfiguration(defaultRollback = true)
+@TransactionConfiguration(defaultRollback = false)
 @Transactional
 public class PersonTest {
 
-	private final static Logger logger = LoggerFactory.getLogger(PersonTest.class);
+	private final static Logger logger = LoggerFactory
+			.getLogger(PersonTest.class);
 
 	@Inject
 	@Named("personService")
@@ -66,8 +67,8 @@ public class PersonTest {
 		person.setFirstname("Hans");
 
 		assertNull(person.getId());
-		Person createdPerson = personService.createPerson(person);
-		assertNotNull(createdPerson.getId());
+		person = personService.createPerson(person);
+		assertNotNull(person.getId());
 
 		Address firstAddress = new AddressImpl();
 		firstAddress.setPerson(person);
@@ -77,11 +78,12 @@ public class PersonTest {
 
 		// First address
 		assertNull(firstAddress.getId());
-		Address createdAddress1 = addressService.createAddressWithPerson(firstAddress, createdPerson);
+		Address createdAddress1 = addressService.createAddressWithPerson(
+				firstAddress, person);
 		assertNotNull(createdAddress1.getId());
 
 		// Update person for the relation to the address
-		Person updatedPerson = personService.findPersonById(createdPerson.getId());
+		Person updatedPerson = personService.findPersonById(person.getId());
 
 		// Assert
 		Address firstCheckedAddress = updatedPerson.getAddress();
@@ -96,42 +98,74 @@ public class PersonTest {
 		// Second address supersedes the first one
 		// The person has only ONE current address
 		assertNull(secondAddress.getId());
-		Address createdAddress2 = addressService.createAddressWithPerson(secondAddress, createdPerson);
+		Address createdAddress2 = addressService.createAddressWithPerson(
+				secondAddress, person);
 		assertNotNull(createdAddress2.getId());
 
+		Address thirdAddress = new AddressImpl();
+		thirdAddress.setPerson(person);
+		thirdAddress.setStreet("Aaasee str. 1");
+		thirdAddress.setCity("Muenster");
+		thirdAddress.setCode("43425");
+
+		// Third address supersedes the first one
+		// The person has only ONE current address
+		assertNull(thirdAddress.getId());
+		Address createdAddress3 = addressService.createAddressWithPerson(
+				thirdAddress, person);
+		assertNotNull(createdAddress3.getId());
+
+		Address fourthAddress = new AddressImpl();
+		fourthAddress.setPerson(person);
+		fourthAddress.setStreet("Weyerstr. 1");
+		fourthAddress.setCity("Solingen");
+		fourthAddress.setCode("47144");
+
+		// Fourth address supersedes the first one
+		// The person has only ONE current address
+		assertNull(fourthAddress.getId());
+		Address createdAddress4 = addressService.createAddressWithPerson(
+				fourthAddress, person);
+		assertNotNull(createdAddress4.getId());
+
 		// Update person for the relation to the address
-		updatedPerson = personService.findPersonById(createdPerson.getId());
+		updatedPerson = personService.findPersonById(person.getId());
 
 		// Assert
 		Address secondCheckedAddress = updatedPerson.getAddress();
 		assertEquals(secondAddress.getCity(), secondCheckedAddress.getCity());
 
 		Address secondCheckedAddressMethod = updatedPerson.address();
-		assertEquals(secondAddress.getCity(), secondCheckedAddressMethod.getCity());
+		assertEquals(secondAddress.getCity(),
+				secondCheckedAddressMethod.getCity());
 
 		Address secondCheckedAddressAlive = updatedPerson.alive();
-		assertEquals(secondAddress.getCity(), secondCheckedAddressAlive.getCity());
+		assertEquals(secondAddress.getCity(),
+				secondCheckedAddressAlive.getCity());
 
 		// Assert amount of object
-		// One person and two addresses but the person has only one current address
+		// One person and four addresses but the person has only one current
+		// address
 		Integer amountOfPerson = personService.getAmountOfPerson();
 		assertEquals(1, amountOfPerson.intValue());
 		Integer amountOfAddress = addressService.getAmountOfAddress();
-		assertEquals(2, amountOfAddress.intValue());
+		assertEquals(4, amountOfAddress.intValue());
 
 		Address currentAddress = updatedPerson.getAddress();
-		assertEquals("Berlin", currentAddress.getCity());
+		assertEquals("Solingen", currentAddress.getCity());
 
 		// Show in logger
 		Collection<Person> persons = personService.findAllPersons();
 		for (Person person2 : persons) {
 			logger.info("XXX - Person.firstname: " + person2.getFirstname());
-			logger.info("XXX - Person.address.city: " + person2.getAddress().getCity());
+			logger.info("XXX - Person.address.city: "
+					+ person2.getAddress().getCity());
 		}
 		Collection<Address> addresses = addressService.findAllAddresses();
 		for (Address address : addresses) {
 			logger.info("YYY - Address.city: " + address.getCity());
-			logger.info("YYY - Address.person.firstname: " + address.getPerson().getFirstname());
+			logger.info("YYY - Address.person.firstname: "
+					+ address.getPerson().getFirstname());
 		}
 	}
 
