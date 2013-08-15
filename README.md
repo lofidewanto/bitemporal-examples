@@ -5,7 +5,7 @@ Temporal and Bitemporal Examples in Java with OSS Frameworks:
 
 * Erwin Vervaet (ervacon): https://svn.ervacon.com/public/projects/bitemporal/trunk
 * DAOFusion: http://opensource.anasoft.com/daofusion-site/index.html
-* Hibernate Envers: http://docs.jboss.org/hibernate/orm/4.1/devguide/en-US/html/ch15.html
+* Hibernate Envers: http://docs.jboss.org/hibernate/orm/4.2/devguide/en-US/html_single/#d5e3941
 * Spring Data JPA Auditing: http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/jpa.repositories.html#jpa.auditing
 * JTemporal: http://jtemporal.sourceforge.net
  
