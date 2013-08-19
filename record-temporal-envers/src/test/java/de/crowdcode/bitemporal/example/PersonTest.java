@@ -180,9 +180,13 @@ public class PersonTest {
 	public void testAuditedAddresses() {
 		// Audit information...
 		Collection<Address> auditedAddresses = addressService
-				.findAuditedAdressesWithRevision(6);
+				.findAuditedAdressesWithRevision(1);
+
+		assertEquals(4, auditedAddresses.size());
+
 		for (Address address : auditedAddresses) {
 			logger.info("YYY - Address.city: " + address.getCity());
+			logger.info("YYY - Address.street: " + address.getStreet());
 			logger.info("YYY - Address.person.firstname: "
 					+ address.getPerson().getFirstname());
 		}
@@ -198,7 +202,6 @@ public class PersonTest {
 		firstAddress.setCity("Hamburg");
 		firstAddress.setCode("11003");
 
-		// First address
 		assertNull(firstAddress.getId());
 		Address createdAddress1 = addressService.createAddressWithPerson(
 				firstAddress, person);
