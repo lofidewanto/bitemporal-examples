@@ -190,7 +190,7 @@ public class PersonTest {
 
 	@Test
 	public void testAddSomeAddresses() {
-		Person person = personService.findPersonById(1L);
+		Person person = personService.findPersonByLastname("Mueller");
 
 		Address firstAddress = new AddressImpl();
 		firstAddress.setPerson(person);
@@ -207,7 +207,7 @@ public class PersonTest {
 
 	@Test
 	public void testUpdateSomeAddresses() {
-		Person person = personService.findPersonById(0L);
+		Person person = personService.findPersonByLastname("Mueller");
 
 		Address address = person.getAddress();
 		address.setStreet("Becherstr. 1");

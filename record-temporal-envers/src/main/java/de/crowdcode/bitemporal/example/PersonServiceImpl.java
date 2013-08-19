@@ -60,4 +60,11 @@ public class PersonServiceImpl implements PersonService {
 		Person person = personRepository.findById(id);
 		return person;
 	}
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public Person findPersonByLastname(String lastname) {
+		Person person = personRepository.findByLastname(lastname);
+		return person;
+	}
 }

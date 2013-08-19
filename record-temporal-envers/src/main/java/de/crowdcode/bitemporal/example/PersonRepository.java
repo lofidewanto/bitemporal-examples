@@ -49,8 +49,22 @@ public class PersonRepository {
 	}
 
 	public Person findById(Long id) {
-		Query query = em.createQuery("select c from PersonImpl c where c.id = :id");
+		Query query = em
+				.createQuery("select c from PersonImpl c where c.id = :id");
 		query.setParameter("id", id);
 		return (Person) query.getSingleResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Person findByLastname(String lastname) {
+		Query query = em
+				.createQuery("select c from PersonImpl c where c.lastname = :lastname");
+		query.setParameter("lastname", lastname);
+		Collection<Person> persons = query.getResultList();
+		if (persons.size() > 1) {
+			throw new RuntimeException("The lastname is unambiguous!");
+		} else {
+			return (Person) query.getSingleResult();
+		}
 	}
 }
