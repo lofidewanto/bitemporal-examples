@@ -66,4 +66,19 @@ public class AddressServiceImpl implements AddressService {
 		personFound.setAddress(addressCreated);
 		return addressCreated;
 	}
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public Collection<Address> findAuditedAdressesWithRevision(
+			Integer revisionNumber) {
+		Collection<Address> addresses = addressRepository
+				.findAuditedAdressesWithRevision(revisionNumber);
+		return addresses;
+	}
+
+	@Override
+	public Address updateAddress(Address address) {
+		Address updatedAddress = addressRepository.update(address);
+		return updatedAddress;
+	}
 }

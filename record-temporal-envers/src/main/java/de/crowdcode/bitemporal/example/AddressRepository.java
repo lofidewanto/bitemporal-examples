@@ -26,6 +26,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -37,8 +38,25 @@ public class AddressRepository {
 
 	private AuditReader ar;
 
+	public AuditReader getAuditReader() {
+		if (ar == null) {
+			return AuditReaderFactory.get(em);
+		} else {
+			return ar;
+		}
+	}
+
+	public void setAuditReader(AuditReader ar) {
+		this.ar = ar;
+	}
+
 	public Address save(Address address) {
 		em.persist(address);
+		return address;
+	}
+
+	public Address update(Address address) {
+		em.merge(address);
 		return address;
 	}
 
@@ -55,14 +73,18 @@ public class AddressRepository {
 	}
 
 	public Address findById(Long id) {
-		Query query = em.createQuery("select c from AddressImpl c where c.id = :id");
+		Query query = em
+				.createQuery("select c from AddressImpl c where c.id = :id");
 		query.setParameter("id", id);
 		return (Address) query.getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<Address> findAuditedAdressesWithRevision(Long revisionNumber) {
-		Collection<Address> auditedAddresses = ar.createQuery().forEntitiesAtRevision(Address.class, 1).getResultList();
+	public Collection<Address> findAuditedAdressesWithRevision(
+			Integer revisionNumber) {
+		Collection<Address> auditedAddresses = getAuditReader().createQuery()
+				.forEntitiesAtRevision(AddressImpl.class, revisionNumber)
+				.getResultList();
 		return auditedAddresses;
 	}
 }

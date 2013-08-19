@@ -61,7 +61,7 @@ public class PersonTest {
 	private AddressService addressService;
 
 	@Test
-	public void testCreateNonTemporalAddresses() {
+	public void testCreateRecordTemporalAddresses() {
 		Person person = new PersonImpl();
 		person.setLastname("Mueller");
 		person.setFirstname("Hans");
@@ -133,14 +133,14 @@ public class PersonTest {
 
 		// Assert
 		Address secondCheckedAddress = updatedPerson.getAddress();
-		assertEquals(secondAddress.getCity(), secondCheckedAddress.getCity());
+		assertEquals(fourthAddress.getCity(), secondCheckedAddress.getCity());
 
 		Address secondCheckedAddressMethod = updatedPerson.address();
-		assertEquals(secondAddress.getCity(),
+		assertEquals(fourthAddress.getCity(),
 				secondCheckedAddressMethod.getCity());
 
 		Address secondCheckedAddressAlive = updatedPerson.alive();
-		assertEquals(secondAddress.getCity(),
+		assertEquals(fourthAddress.getCity(),
 				secondCheckedAddressAlive.getCity());
 
 		// Assert amount of object
@@ -174,5 +174,44 @@ public class PersonTest {
 		// No address object because we make a rollback
 		Integer amountOfAddress = addressService.getAmountOfAddress();
 		assertEquals(0, amountOfAddress.intValue());
+	}
+
+	@Test
+	public void testAuditedAddresses() {
+		// Audit information...
+		Collection<Address> auditedAddresses = addressService
+				.findAuditedAdressesWithRevision(6);
+		for (Address address : auditedAddresses) {
+			logger.info("YYY - Address.city: " + address.getCity());
+			logger.info("YYY - Address.person.firstname: "
+					+ address.getPerson().getFirstname());
+		}
+	}
+
+	@Test
+	public void testAddSomeAddresses() {
+		Person person = personService.findPersonById(1L);
+
+		Address firstAddress = new AddressImpl();
+		firstAddress.setPerson(person);
+		firstAddress.setStreet("Burgstr. 21");
+		firstAddress.setCity("Hamburg");
+		firstAddress.setCode("11003");
+
+		// First address
+		assertNull(firstAddress.getId());
+		Address createdAddress1 = addressService.createAddressWithPerson(
+				firstAddress, person);
+		assertNotNull(createdAddress1.getId());
+	}
+
+	@Test
+	public void testUpdateSomeAddresses() {
+		Person person = personService.findPersonById(0L);
+
+		Address address = person.getAddress();
+		address.setStreet("Becherstr. 1");
+
+		addressService.updateAddress(address);
 	}
 }
