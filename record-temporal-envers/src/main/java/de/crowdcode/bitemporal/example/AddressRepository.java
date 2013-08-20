@@ -19,6 +19,7 @@
 package de.crowdcode.bitemporal.example;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -98,5 +99,13 @@ public class AddressRepository {
 				.add(AuditEntity.revisionNumber().gt(revisionNumber))
 				.getSingleResult();
 		return revision;
+	}
+
+	public List<Object> findEntitiesChangedByRevisionNumber(
+			Number revisionNumber) {
+		List<Object> modifiedEntities = getAuditReader()
+				.getCrossTypeRevisionChangesReader().findEntities(
+						revisionNumber);
+		return modifiedEntities;
 	}
 }

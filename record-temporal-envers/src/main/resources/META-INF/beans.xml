@@ -39,6 +39,7 @@
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="org.hibernate.envers.track_entities_changed_in_revision">${hibernate.envers.track_entities_changed_in_revision}</prop>
 			</props>
 		</property>
 	</bean>

@@ -18,16 +18,22 @@
  */
 package de.crowdcode.bitemporal.example;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Named("addressService")
 public class AddressServiceImpl implements AddressService {
+
+	private final static Logger logger = LoggerFactory
+			.getLogger(AddressServiceImpl.class);
 
 	@Inject
 	@Named("addressRepository")
@@ -91,5 +97,26 @@ public class AddressServiceImpl implements AddressService {
 				.findRevisionNumberByAddressIdAndRevisionNumber(addressId,
 						revisionNumber);
 		return number.toString();
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public Collection<Address> findAddressesChangedByRevisionNumber(
+			Integer revisionNumber) {
+		Collection<Object> objects = addressRepository
+				.findEntitiesChangedByRevisionNumber(revisionNumber);
+		logger.info("findAddressesChangedByRevisionNumber: amount of objects: "
+				+ objects.size());
+
+		Collection<Address> addresses = new ArrayList<Address>();
+		for (Object object : objects) {
+			if (object instanceof Address) {
+				addresses.add((Address) object);
+			}
+		}
+
+		logger.info("findAddressesChangedByRevisionNumber: amount of addresses: "
+				+ addresses.size());
+		return addresses;
 	}
 }

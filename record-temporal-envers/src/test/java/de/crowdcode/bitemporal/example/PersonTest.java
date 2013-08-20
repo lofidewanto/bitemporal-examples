@@ -268,4 +268,11 @@ public class PersonTest {
 				.findRevisionNumberByAddressIdAndRevisionNumber(addressId, 2);
 		assertEquals("3", result);
 	}
+
+	@Test
+	public void testAuditedAddresses() {
+		Collection<Address> addresses = addressService
+				.findAddressesChangedByRevisionNumber(2);
+		assertEquals(1, addresses.size());
+	}
 }
