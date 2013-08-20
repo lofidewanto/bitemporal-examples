@@ -213,7 +213,7 @@ public class PersonTest {
 		Person person = personService.findPersonByLastname("Mueller");
 
 		Address address = person.getAddress();
-		address.setStreet("Becherstr. 1");
+		address.setStreet("Hamburgstr. 1");
 
 		addressService.updateAddress(address);
 	}
@@ -246,9 +246,9 @@ public class PersonTest {
 
 		Address firstAddress = new AddressImpl();
 		firstAddress.setPerson(person);
-		firstAddress.setStreet("Burgstr. 21");
-		firstAddress.setCity("Hamburg");
-		firstAddress.setCode("11003");
+		firstAddress.setStreet("Deutschstr. 21");
+		firstAddress.setCity("Hannover");
+		firstAddress.setCode("30159");
 
 		assertNull(firstAddress.getId());
 		Address createdAddress1 = addressService.createAddressWithPerson(
@@ -270,9 +270,47 @@ public class PersonTest {
 	}
 
 	@Test
-	public void testAuditedAddresses() {
+	public void testAuditedAddressesChangedByRevision1() {
+		Collection<Address> addresses = addressService
+				.findAddressesChangedByRevisionNumber(1);
+		logger.info("testAuditedAddressesChangedByRevision1: ...");
+		for (Address address2 : addresses) {
+			logger.info("Address.street: " + address2.getStreet());
+			logger.info("Address.code: " + address2.getCode());
+			logger.info("Address.city: " + address2.getCity());
+			assertEquals("Burgstr. 21", address2.getStreet());
+		}
+
+		assertEquals(1, addresses.size());
+	}
+
+	@Test
+	public void testAuditedAddressesChangedByRevision2() {
 		Collection<Address> addresses = addressService
 				.findAddressesChangedByRevisionNumber(2);
+		logger.info("testAuditedAddressesChangedByRevision2: ...");
+		for (Address address2 : addresses) {
+			logger.info("Address.street: " + address2.getStreet());
+			logger.info("Address.code: " + address2.getCode());
+			logger.info("Address.city: " + address2.getCity());
+			assertEquals("Hamburgstr. 1", address2.getStreet());
+		}
+
+		assertEquals(1, addresses.size());
+	}
+
+	@Test
+	public void testAuditedAddressesChangedByRevision3() {
+		Collection<Address> addresses = addressService
+				.findAddressesChangedByRevisionNumber(3);
+		logger.info("testAuditedAddressesChangedByRevision3: ...");
+		for (Address address2 : addresses) {
+			logger.info("Address.street: " + address2.getStreet());
+			logger.info("Address.code: " + address2.getCode());
+			logger.info("Address.city: " + address2.getCity());
+			assertEquals("Deutschstr. 21", address2.getStreet());
+		}
+
 		assertEquals(1, addresses.size());
 	}
 }
