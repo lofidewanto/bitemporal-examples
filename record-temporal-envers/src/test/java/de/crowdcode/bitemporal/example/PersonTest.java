@@ -177,7 +177,7 @@ public class PersonTest {
 	}
 
 	@Test
-	public void testAuditedAddresses1() {
+	public void testAuditedAmountOfAddresses1() {
 		// Audit information...
 		Collection<Address> auditedAddresses = addressService
 				.findAuditedAdressesWithRevision(1);
@@ -219,11 +219,53 @@ public class PersonTest {
 	}
 
 	@Test
-	public void testAuditedAddresses2() {
+	public void testAuditedAmountOfAddresses2() {
 		// Audit information...
 		Collection<Address> auditedAddresses = addressService
 				.findAuditedAdressesWithRevision(2);
 
 		assertEquals(5, auditedAddresses.size());
+	}
+
+	@Test
+	public void testAuditedAddressesRevision1() {
+		Person person = personService.findPersonByLastname("Mueller");
+		Address address = person.getAddress();
+
+		Long addressId = address.getId();
+		assertEquals(4L, addressId.longValue());
+
+		String result = addressService
+				.findRevisionNumberByAddressIdAndRevisionNumber(addressId, 1);
+		assertEquals("2", result);
+	}
+
+	@Test
+	public void testAddSomeAddresses2() {
+		Person person = personService.findPersonByLastname("Mueller");
+
+		Address firstAddress = new AddressImpl();
+		firstAddress.setPerson(person);
+		firstAddress.setStreet("Burgstr. 21");
+		firstAddress.setCity("Hamburg");
+		firstAddress.setCode("11003");
+
+		assertNull(firstAddress.getId());
+		Address createdAddress1 = addressService.createAddressWithPerson(
+				firstAddress, person);
+		assertNotNull(createdAddress1.getId());
+	}
+
+	@Test
+	public void testAuditedAddressesRevision2() {
+		Person person = personService.findPersonByLastname("Mueller");
+		Address address = person.getAddress();
+
+		Long addressId = address.getId();
+		assertEquals(5L, addressId.longValue());
+
+		String result = addressService
+				.findRevisionNumberByAddressIdAndRevisionNumber(addressId, 2);
+		assertEquals("3", result);
 	}
 }

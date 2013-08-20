@@ -27,6 +27,7 @@ import javax.persistence.Query;
 
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.query.AuditEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -86,5 +87,16 @@ public class AddressRepository {
 				.forEntitiesAtRevision(AddressImpl.class, revisionNumber)
 				.getResultList();
 		return auditedAddresses;
+	}
+
+	public Number findRevisionNumberByAddressIdAndRevisionNumber(
+			Long addressId, Number revisionNumber) {
+		Number revision = (Number) getAuditReader().createQuery()
+				.forRevisionsOfEntity(AddressImpl.class, false, true)
+				.addProjection(AuditEntity.revisionNumber().min())
+				.add(AuditEntity.id().eq(addressId))
+				.add(AuditEntity.revisionNumber().gt(revisionNumber))
+				.getSingleResult();
+		return revision;
 	}
 }

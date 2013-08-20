@@ -77,8 +77,19 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Address updateAddress(Address address) {
 		Address updatedAddress = addressRepository.update(address);
 		return updatedAddress;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public String findRevisionNumberByAddressIdAndRevisionNumber(
+			Long addressId, Integer revisionNumber) {
+		Number number = addressRepository
+				.findRevisionNumberByAddressIdAndRevisionNumber(addressId,
+						revisionNumber);
+		return number.toString();
 	}
 }
