@@ -173,11 +173,11 @@ public class PersonTest {
 	public void testEmptyAddresses() {
 		// No address object because we make a rollback
 		Integer amountOfAddress = addressService.getAmountOfAddress();
-		assertEquals(0, amountOfAddress.intValue());
+		assertEquals(4, amountOfAddress.intValue());
 	}
 
 	@Test
-	public void testAuditedAddresses() {
+	public void testAuditedAddresses1() {
 		// Audit information...
 		Collection<Address> auditedAddresses = addressService
 				.findAuditedAdressesWithRevision(1);
@@ -216,5 +216,14 @@ public class PersonTest {
 		address.setStreet("Becherstr. 1");
 
 		addressService.updateAddress(address);
+	}
+
+	@Test
+	public void testAuditedAddresses2() {
+		// Audit information...
+		Collection<Address> auditedAddresses = addressService
+				.findAuditedAdressesWithRevision(2);
+
+		assertEquals(5, auditedAddresses.size());
 	}
 }
