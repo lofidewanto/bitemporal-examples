@@ -25,8 +25,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Address implementation.
@@ -54,7 +57,16 @@ public class AddressImpl implements Address, Serializable {
 	@Column(name = "city")
 	private String city;
 
-	@OneToOne(targetEntity = PersonImpl.class)
+	@Column(name = "validfrom")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date validFrom;
+
+	@Column(name = "validto")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date validTo;
+
+	@ManyToOne(targetEntity = PersonImpl.class)
+	@JoinColumn(nullable = true, updatable = false)
 	private Person person;
 
 	@Override
@@ -109,25 +121,22 @@ public class AddressImpl implements Address, Serializable {
 
 	@Override
 	public Date getValidFrom() {
-		// TODO Auto-generated method stub
-		return null;
+		return validFrom;
 	}
 
 	@Override
 	public void setValidFrom(Date validFrom) {
-		// TODO Auto-generated method stub
+		this.validFrom = validFrom;
 
 	}
 
 	@Override
 	public Date getValidTo() {
-		// TODO Auto-generated method stub
-		return null;
+		return validTo;
 	}
 
 	@Override
 	public void setValidTo(Date validTo) {
-		// TODO Auto-generated method stub
-
+		this.validTo = validTo;
 	}
 }

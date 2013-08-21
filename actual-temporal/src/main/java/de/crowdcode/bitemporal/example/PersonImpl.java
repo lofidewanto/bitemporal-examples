@@ -19,14 +19,20 @@
 package de.crowdcode.bitemporal.example;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.apache.commons.lang.NotImplementedException;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  * Person implementation.
@@ -51,9 +57,10 @@ public class PersonImpl implements Person, Serializable {
 	@Column(name = "lastname")
 	private String lastname;
 
-	@OneToOne(targetEntity = AddressImpl.class)
-	@JoinColumn
-	private Address address;
+	@OneToMany(fetch = FetchType.LAZY)
+	@Cascade(value = { CascadeType.ALL })
+	@JoinColumn(name = "person")
+	private Collection<Address> addresses;
 
 	@Override
 	public String getFirstname() {
@@ -66,13 +73,13 @@ public class PersonImpl implements Person, Serializable {
 	}
 
 	@Override
-	public Address getAddress() {
-		return this.address;
+	public Collection<Address> getAddresses() {
+		return addresses;
 	}
 
 	@Override
-	public void setAddress(Address address) {
-		this.address = address;
+	public void addAddresses(Address address) {
+		addresses.add(address);
 	}
 
 	@Override
@@ -87,12 +94,15 @@ public class PersonImpl implements Person, Serializable {
 
 	@Override
 	public Address address() {
-		return getAddress();
+		// Return the actual address for validFrom and validTo. There can be one
+		// and only one address
+		return null;
 	}
 
 	@Override
 	public Address alive() {
-		return getAddress();
+		// Not implemented
+		throw new NotImplementedException("Person.alive() is not implemented!");
 	}
 
 	@Override

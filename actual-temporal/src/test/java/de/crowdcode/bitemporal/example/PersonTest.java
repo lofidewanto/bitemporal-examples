@@ -49,7 +49,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PersonTest {
 
-	private final static Logger logger = LoggerFactory.getLogger(PersonTest.class);
+	private final static Logger logger = LoggerFactory
+			.getLogger(PersonTest.class);
 
 	@Inject
 	@Named("personService")
@@ -77,14 +78,16 @@ public class PersonTest {
 
 		// First address
 		assertNull(firstAddress.getId());
-		Address createdAddress1 = addressService.createAddressWithPerson(firstAddress, createdPerson);
+		Address createdAddress1 = addressService.createAddressWithPerson(
+				firstAddress, createdPerson);
 		assertNotNull(createdAddress1.getId());
 
 		// Update person for the relation to the address
-		Person updatedPerson = personService.findPersonById(createdPerson.getId());
+		Person updatedPerson = personService.findPersonById(createdPerson
+				.getId());
 
 		// Assert
-		Address firstCheckedAddress = updatedPerson.getAddress();
+		Address firstCheckedAddress = updatedPerson.address();
 		assertEquals(firstAddress.getCity(), firstCheckedAddress.getCity());
 
 		Address secondAddress = new AddressImpl();
@@ -96,42 +99,48 @@ public class PersonTest {
 		// Second address supersedes the first one
 		// The person has only ONE current address
 		assertNull(secondAddress.getId());
-		Address createdAddress2 = addressService.createAddressWithPerson(secondAddress, createdPerson);
+		Address createdAddress2 = addressService.createAddressWithPerson(
+				secondAddress, createdPerson);
 		assertNotNull(createdAddress2.getId());
 
 		// Update person for the relation to the address
 		updatedPerson = personService.findPersonById(createdPerson.getId());
 
 		// Assert
-		Address secondCheckedAddress = updatedPerson.getAddress();
+		Address secondCheckedAddress = updatedPerson.address();
 		assertEquals(secondAddress.getCity(), secondCheckedAddress.getCity());
 
 		Address secondCheckedAddressMethod = updatedPerson.address();
-		assertEquals(secondAddress.getCity(), secondCheckedAddressMethod.getCity());
+		assertEquals(secondAddress.getCity(),
+				secondCheckedAddressMethod.getCity());
 
 		Address secondCheckedAddressAlive = updatedPerson.alive();
-		assertEquals(secondAddress.getCity(), secondCheckedAddressAlive.getCity());
+		assertEquals(secondAddress.getCity(),
+				secondCheckedAddressAlive.getCity());
 
 		// Assert amount of object
-		// One person and two addresses but the person has only one current address
+		// One person and two addresses but the person has only one current
+		// address
 		Integer amountOfPerson = personService.getAmountOfPerson();
 		assertEquals(1, amountOfPerson.intValue());
 		Integer amountOfAddress = addressService.getAmountOfAddress();
 		assertEquals(2, amountOfAddress.intValue());
 
-		Address currentAddress = updatedPerson.getAddress();
+		Address currentAddress = updatedPerson.address();
 		assertEquals("Berlin", currentAddress.getCity());
 
 		// Show in logger
 		Collection<Person> persons = personService.findAllPersons();
 		for (Person person2 : persons) {
 			logger.info("XXX - Person.firstname: " + person2.getFirstname());
-			logger.info("XXX - Person.address.city: " + person2.getAddress().getCity());
+			logger.info("XXX - Person.address.city: "
+					+ person2.address().getCity());
 		}
 		Collection<Address> addresses = addressService.findAllAddresses();
 		for (Address address : addresses) {
 			logger.info("YYY - Address.city: " + address.getCity());
-			logger.info("YYY - Address.person.firstname: " + address.getPerson().getFirstname());
+			logger.info("YYY - Address.person.firstname: "
+					+ address.getPerson().getFirstname());
 		}
 	}
 

@@ -63,7 +63,7 @@ public class AddressServiceImpl implements AddressService {
 	public Address createAddressWithPerson(Address address, Person person) {
 		Address addressCreated = addressRepository.save(address);
 		Person personFound = personService.findPersonById(person.getId());
-		personFound.setAddress(addressCreated);
+		personFound.addAddresses(addressCreated);
 		return addressCreated;
 	}
 }
