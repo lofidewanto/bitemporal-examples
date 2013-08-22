@@ -100,7 +100,7 @@ public class PersonImpl implements Person, Serializable {
 		Address lastValidAddress = address();
 		if (lastValidAddress != null) {
 			// Update the validTo to the new address validFrom
-			lastValidAddress.setValidTo(address.getValidFrom());
+			// lastValidAddress.setValidTo(address.getValidFrom());
 			addressRepository.update(lastValidAddress);
 		}
 		// Add the new address
@@ -121,8 +121,10 @@ public class PersonImpl implements Person, Serializable {
 	public Address address() {
 		// Return the actual address for validFrom and validTo. There can
 		// be one and only one address
+		Date validDate = new Date();
 		Address currentAddress = addressRepository.findByPersonIdAndValidity(
-				this.id, new Date());
+				this.id, validDate);
+
 		return currentAddress;
 	}
 
