@@ -121,7 +121,8 @@ public class PersonImpl implements Person, Serializable {
 	public Address address() {
 		// Return the actual address for validFrom and validTo. There can
 		// be one and only one address
-		Address currentAddress = addressRepository.findByValidity(new Date());
+		Address currentAddress = addressRepository.findByPersonIdAndValidity(
+				this.id, new Date());
 		return currentAddress;
 	}
 

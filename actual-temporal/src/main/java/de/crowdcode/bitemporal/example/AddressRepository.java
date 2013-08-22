@@ -75,4 +75,17 @@ public class AddressRepository {
 			return null;
 		}
 	}
+
+	public Address findByPersonIdAndValidity(Long personId, Date validDate) {
+		try {
+			Query query = em.createQuery("select c from AddressImpl c where "
+					+ "c.validFrom >= :validDate and "
+					+ "c.validTo <= :validDate and " + "c.person = :personId");
+			query.setParameter("validDate", validDate);
+			query.setParameter("personId", personId);
+			return (Address) query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }
