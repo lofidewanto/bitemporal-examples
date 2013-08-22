@@ -19,6 +19,7 @@
 package de.crowdcode.bitemporal.example;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -39,6 +40,11 @@ public class AddressRepository {
 		return address;
 	}
 
+	public Address update(Address address) {
+		em.merge(address);
+		return address;
+	}
+
 	public Integer getAmount() {
 		Query query = em.createQuery("select count(c.id) from AddressImpl c");
 		Number amount = (Number) query.getSingleResult();
@@ -52,8 +58,21 @@ public class AddressRepository {
 	}
 
 	public Address findById(Long id) {
-		Query query = em.createQuery("select c from AddressImpl c where c.id = :id");
+		Query query = em
+				.createQuery("select c from AddressImpl c where c.id = :id");
 		query.setParameter("id", id);
 		return (Address) query.getSingleResult();
+	}
+
+	public Address findByValidity(Date validDate) {
+		try {
+			Query query = em.createQuery("select c from AddressImpl c where "
+					+ "c.validFrom >= :validDate and "
+					+ "c.validTo <= :validDate");
+			query.setParameter("validDate", validDate);
+			return (Address) query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

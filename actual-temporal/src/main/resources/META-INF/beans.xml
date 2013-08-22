@@ -11,6 +11,7 @@
 
 	<context:component-scan base-package="de.crowdcode.bitemporal.example" />
 	<context:annotation-config />
+	<context:spring-configured />
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<bean

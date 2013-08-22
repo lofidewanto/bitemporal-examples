@@ -49,7 +49,8 @@ public class PersonRepository {
 	}
 
 	public Person findById(Long id) {
-		Query query = em.createQuery("select c from PersonImpl c where c.id = :id");
+		Query query = em.createQuery("select c from PersonImpl "
+				+ "c left join fetch c.addresses " + "where c.id = :id");
 		query.setParameter("id", id);
 		return (Person) query.getSingleResult();
 	}

@@ -307,6 +307,55 @@
 					<classpathScope>test</classpathScope>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<configuration>
+							<source>1.6</source>
+							<target>1.6</target>
+							<verbose>false</verbose>
+							<outxml>true</outxml>
+							<aspectLibraries>
+								<aspectLibrary>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-aspects</artifactId>
+								</aspectLibrary>
+							</aspectLibraries>
+						</configuration>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<configuration>
+							<source>1.6</source>
+							<target>1.6</target>
+							<verbose>false</verbose>
+							<aspectLibraries>
+								<aspectLibrary>
+									<groupId>org.springframework</groupId>
+									<artifactId>spring-aspects</artifactId>
+								</aspectLibrary>
+							</aspectLibraries>
+						</configuration>
+						<goals>
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<ajdtVersion>1.5</ajdtVersion>
+				</configuration>
+			</plugin>
 		</plugins>
 
 		<pluginManagement>
@@ -346,6 +395,26 @@
 										</versionRange>
 										<goals>
 											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											aspectj-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.4,)
+										</versionRange>
+										<goals>
+											<goal>compile</goal>
+											<goal>test-compile</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

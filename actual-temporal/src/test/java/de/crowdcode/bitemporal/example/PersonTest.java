@@ -22,7 +22,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -60,8 +62,15 @@ public class PersonTest {
 	@Named("addressService")
 	private AddressService addressService;
 
+	private Date addDays(Date date, int days) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, days);
+		return cal.getTime();
+	}
+
 	@Test
-	public void testCreateNonTemporalAddresses() {
+	public void testCreateActualTemporalAddresses() {
 		Person person = new PersonImpl();
 		person.setLastname("Mueller");
 		person.setFirstname("Hans");
@@ -75,6 +84,8 @@ public class PersonTest {
 		firstAddress.setStreet("Hauptstr. 21");
 		firstAddress.setCity("Koeln");
 		firstAddress.setCode("50698");
+		firstAddress.setValidFrom(new Date());
+		firstAddress.setValidTo(addDays(new Date(), 10));
 
 		// First address
 		assertNull(firstAddress.getId());
@@ -113,10 +124,6 @@ public class PersonTest {
 		Address secondCheckedAddressMethod = updatedPerson.address();
 		assertEquals(secondAddress.getCity(),
 				secondCheckedAddressMethod.getCity());
-
-		Address secondCheckedAddressAlive = updatedPerson.alive();
-		assertEquals(secondAddress.getCity(),
-				secondCheckedAddressAlive.getCity());
 
 		// Assert amount of object
 		// One person and two addresses but the person has only one current

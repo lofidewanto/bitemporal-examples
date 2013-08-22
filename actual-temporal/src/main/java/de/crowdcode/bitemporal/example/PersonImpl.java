@@ -19,8 +19,12 @@
 package de.crowdcode.bitemporal.example;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,10 +33,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.springframework.beans.factory.annotation.Configurable;
 
 /**
  * Person implementation.
@@ -41,6 +47,7 @@ import org.hibernate.annotations.CascadeType;
  * @since 1.0.0
  * @version 1.0.0
  */
+@Configurable(preConstruction = true)
 @Entity
 @Table(name = "person")
 public class PersonImpl implements Person, Serializable {
@@ -60,7 +67,12 @@ public class PersonImpl implements Person, Serializable {
 	@OneToMany(fetch = FetchType.LAZY)
 	@Cascade(value = { CascadeType.ALL })
 	@JoinColumn(name = "person")
-	private Collection<Address> addresses;
+	private final Collection<AddressImpl> addresses = new ArrayList<AddressImpl>();
+
+	@Transient
+	@Inject
+	@Named("addressRepository")
+	private AddressRepository addressRepository;
 
 	@Override
 	public String getFirstname() {
@@ -74,12 +86,25 @@ public class PersonImpl implements Person, Serializable {
 
 	@Override
 	public Collection<Address> getAddresses() {
-		return addresses;
+		Collection<Address> newAddresses = new ArrayList<Address>();
+		for (Address address : addresses) {
+			newAddresses.add(address);
+		}
+		return newAddresses;
 	}
 
 	@Override
 	public void addAddresses(Address address) {
-		addresses.add(address);
+		// Update the validFrom and validTo
+		// Check the last valid address
+		Address lastValidAddress = address();
+		if (lastValidAddress != null) {
+			// Update the validTo to the new address validFrom
+			lastValidAddress.setValidTo(address.getValidFrom());
+			addressRepository.update(lastValidAddress);
+		}
+		// Add the new address
+		addresses.add((AddressImpl) address);
 	}
 
 	@Override
@@ -94,15 +119,30 @@ public class PersonImpl implements Person, Serializable {
 
 	@Override
 	public Address address() {
-		// Return the actual address for validFrom and validTo. There can be one
-		// and only one address
-		return null;
+		// Return the actual address for validFrom and validTo. There can
+		// be one and only one address
+		Address currentAddress = addressRepository.findByValidity(new Date());
+		return currentAddress;
 	}
 
 	@Override
-	public Address alive() {
+	public Address addressValidOn(Date valid) {
+		// Auto-generated method stub
+		Address currentAddressOnDate = addressRepository.findByValidity(valid);
+		return currentAddressOnDate;
+	}
+
+	@Override
+	public Boolean alive() {
 		// Not implemented
 		throw new NotImplementedException("Person.alive() is not implemented!");
+	}
+
+	@Override
+	public Boolean aliveValidOn(Date valid) {
+		// Not implemented
+		throw new NotImplementedException(
+				"Person.aliveValidOn() is not implemented!");
 	}
 
 	@Override
