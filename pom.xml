@@ -30,7 +30,6 @@
 	<!-- =============================================================== -->
 	<modules>
 		<module>bitemporal-daofusion</module>
-		<module>bitemporal-envers</module>
 		<module>non-temporal</module>
 		<module>actual-temporal</module>
 		<module>record-temporal-envers</module>
