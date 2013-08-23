@@ -19,8 +19,8 @@ You can take a look at some examples in this folder:
 * **record-temporal-envers**: this is a record temporal example using Hibernate Envers
 * **bitemporal-daofusion**: this is a bitemporal example using the framework from Erwin Vervaet and DAOFusion
 
-All the examples use following implementation frameworks:
-* [KissMDA](https://github.com/crowdcode-de/KissMDA): to be able to generate the Java interfaces automatically from the UML model. Using UML makes it easy to explain the examples! 
+All the examples use following implementation basic frameworks:
+* [KissMDA](https://github.com/crowdcode-de/KissMDA): to be able to generate the Java interfaces automatically from the UML model. Using UML makes it easy to explain the examples! You can see the exported model as JPG file in ==src/main/docs== directory.
 * [Spring Framework](http://www.springsource.org/spring-framework): for dependency injection and integration platform
 * [Hibernate](http://www.hibernate.org): as the implementation of JPA
 * [Maven](http://maven.apache.org): as build system
