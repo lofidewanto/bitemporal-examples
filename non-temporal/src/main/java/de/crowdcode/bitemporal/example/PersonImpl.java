@@ -28,6 +28,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.NotImplementedException;
+
 /**
  * Person implementation.
  * 
@@ -91,8 +93,9 @@ public class PersonImpl implements Person, Serializable {
 	}
 
 	@Override
-	public Address alive() {
-		return getAddress();
+	public Boolean alive() {
+		// Not implemented
+		throw new NotImplementedException("Person.alive() is not implemented!");
 	}
 
 	@Override
