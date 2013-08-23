@@ -157,7 +157,7 @@ public class PersonImpl implements Person, Serializable {
 	public Boolean alive(Date valid) {
 		// Not implemented
 		throw new NotImplementedException(
-				"Person.aliveValidOn() is not implemented!");
+				"Person.alive(Date valid) is not implemented!");
 	}
 
 	@Override
