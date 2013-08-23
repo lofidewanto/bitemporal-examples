@@ -20,7 +20,7 @@ You can take a look at some examples in this folder:
 * **bitemporal-daofusion**: this is a bitemporal example using the framework from Erwin Vervaet and DAOFusion
 
 All the examples use following implementation basic frameworks:
-* [KissMDA](https://github.com/crowdcode-de/KissMDA): to be able to generate the Java interfaces automatically from the UML model. Using UML makes it easy to explain the examples! You can see the exported model as JPG file in *src/main/docs* directory.
+* [KissMDA](https://github.com/crowdcode-de/KissMDA): to be able to generate the Java interfaces automatically from the UML model. Using UML makes it easy to explain the examples! You can see the exported model as JPG file in *src/main/docs* directory (please sse this as [example](https://github.com/lofidewanto/bitemporal-examples/blob/master/bitemporal-daofusion/src/main/docs/bitemporal-model.jpg)).
 * [Spring Framework](http://www.springsource.org/spring-framework): for dependency injection and integration platform
 * [Hibernate](http://www.hibernate.org): as the implementation of JPA
 * [Maven](http://maven.apache.org): as build system
