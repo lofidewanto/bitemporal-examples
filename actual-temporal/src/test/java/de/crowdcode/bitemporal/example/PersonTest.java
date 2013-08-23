@@ -62,6 +62,7 @@ public class PersonTest {
 	@Named("addressService")
 	private AddressService addressService;
 
+	@SuppressWarnings("unused")
 	private Date addDays(Date date, int days) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
@@ -84,8 +85,10 @@ public class PersonTest {
 		firstAddress.setStreet("Hauptstr. 21");
 		firstAddress.setCity("Koeln");
 		firstAddress.setCode("50698");
-		firstAddress.setValidFrom(new Date());
-		firstAddress.setValidTo(addDays(new Date(), 10));
+		// Valid from 9.9.1999
+		Calendar cal = Calendar.getInstance();
+		cal.set(1999, Calendar.SEPTEMBER, 9);
+		firstAddress.setValidFrom(cal.getTime());
 
 		// First address
 		assertNull(firstAddress.getId());
@@ -100,12 +103,18 @@ public class PersonTest {
 		// Assert
 		Address firstCheckedAddress = updatedPerson.address();
 		assertEquals(firstAddress.getCity(), firstCheckedAddress.getCity());
+		cal.set(2008, Calendar.AUGUST, 9);
+		firstCheckedAddress = updatedPerson.address(cal.getTime());
+		assertEquals(firstAddress.getCity(), firstCheckedAddress.getCity());
 
 		Address secondAddress = new AddressImpl();
 		secondAddress.setPerson(person);
 		secondAddress.setStreet("Grossmarkt 22");
 		secondAddress.setCity("Berlin");
 		secondAddress.setCode("10313");
+		// Valid from 8.8.2008
+		cal.set(2008, Calendar.AUGUST, 8);
+		secondAddress.setValidFrom(cal.getTime());
 
 		// Second address supersedes the first one
 		// The person has only ONE current address
@@ -117,13 +126,18 @@ public class PersonTest {
 		// Update person for the relation to the address
 		updatedPerson = personService.findPersonById(createdPerson.getId());
 
-		// Assert
-		Address secondCheckedAddress = updatedPerson.address();
-		assertEquals(secondAddress.getCity(), secondCheckedAddress.getCity());
+		// Assert between 9.9.1999 and 8.8.2008, still in Koeln
+		cal.set(2007, Calendar.AUGUST, 9);
+		Address secondCheckedAddress = updatedPerson.address(cal.getTime());
+		assertEquals(firstAddress.getCity(), secondCheckedAddress.getCity());
 
-		Address secondCheckedAddressMethod = updatedPerson.address();
-		assertEquals(secondAddress.getCity(),
-				secondCheckedAddressMethod.getCity());
+		// Now
+		secondCheckedAddress = updatedPerson.address();
+		assertEquals(secondAddress.getCity(), secondCheckedAddress.getCity());
+		// After 8.8.2008
+		cal.set(2010, Calendar.AUGUST, 9);
+		secondCheckedAddress = updatedPerson.address(cal.getTime());
+		assertEquals(secondAddress.getCity(), secondCheckedAddress.getCity());
 
 		// Assert amount of object
 		// One person and two addresses but the person has only one current

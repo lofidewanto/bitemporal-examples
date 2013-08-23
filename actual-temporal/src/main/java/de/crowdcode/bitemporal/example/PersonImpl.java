@@ -21,6 +21,7 @@ package de.crowdcode.bitemporal.example;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -95,14 +96,6 @@ public class PersonImpl implements Person, Serializable {
 
 	@Override
 	public void addAddresses(Address address) {
-		// Update the validFrom and validTo
-		// Check the last valid address
-		Address lastValidAddress = address();
-		if (lastValidAddress != null) {
-			// Update the validTo to the new address validFrom
-			// lastValidAddress.setValidTo(address.getValidFrom());
-			addressRepository.update(lastValidAddress);
-		}
 		// Add the new address
 		addresses.add((AddressImpl) address);
 	}
@@ -119,19 +112,38 @@ public class PersonImpl implements Person, Serializable {
 
 	@Override
 	public Address address() {
-		// Return the actual address for validFrom and validTo. There can
-		// be one and only one address
+		// Return the actual address for validFrom. There can
+		// be one and only one actual address
 		Date validDate = new Date();
-		Address currentAddress = addressRepository.findByPersonIdAndValidity(
-				this.id, validDate);
-
+		Address currentAddress = getSingleAddress(validDate);
 		return currentAddress;
 	}
 
+	/**
+	 * Get one and only one address.
+	 * 
+	 * @param validDate
+	 *            the validity date
+	 * @return the single address
+	 */
+	Address getSingleAddress(Date validDate) {
+		Collection<AddressImpl> currentAddresses = addressRepository
+				.findByPersonIdAndValidity(this.id, validDate);
+		if (currentAddresses.size() == 0) {
+			return null;
+		} else if (currentAddresses.size() == 1) {
+			Address currentAddress = currentAddresses.iterator().next();
+			return currentAddress;
+		} else {
+			// We found more than one, we need the latest one!
+			Address latestAddress = Collections.max(currentAddresses);
+			return latestAddress;
+		}
+	}
+
 	@Override
-	public Address addressValidOn(Date valid) {
-		// Auto-generated method stub
-		Address currentAddressOnDate = addressRepository.findByValidity(valid);
+	public Address address(Date valid) {
+		Address currentAddressOnDate = getSingleAddress(valid);
 		return currentAddressOnDate;
 	}
 
@@ -142,7 +154,7 @@ public class PersonImpl implements Person, Serializable {
 	}
 
 	@Override
-	public Boolean aliveValidOn(Date valid) {
+	public Boolean alive(Date valid) {
 		// Not implemented
 		throw new NotImplementedException(
 				"Person.aliveValidOn() is not implemented!");

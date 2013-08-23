@@ -40,7 +40,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "address")
-public class AddressImpl implements Address, Serializable {
+public class AddressImpl implements Address, Serializable, Comparable<Address> {
 
 	private static final long serialVersionUID = -1006036224536880106L;
 
@@ -60,10 +60,6 @@ public class AddressImpl implements Address, Serializable {
 	@Column(name = "validfrom")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date validFrom;
-
-	@Column(name = "validto")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date validTo;
 
 	@ManyToOne(targetEntity = PersonImpl.class)
 	@JoinColumn(nullable = true, updatable = false)
@@ -131,12 +127,14 @@ public class AddressImpl implements Address, Serializable {
 	}
 
 	@Override
-	public Date getValidTo() {
-		return validTo;
-	}
-
-	@Override
-	public void setValidTo(Date validTo) {
-		this.validTo = validTo;
+	public int compareTo(Address inputAddress) {
+		Date inputDate = inputAddress.getValidFrom();
+		if (this.validFrom.before(inputDate)) {
+			return -1;
+		} else if (this.validFrom.equals(inputDate)) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 }

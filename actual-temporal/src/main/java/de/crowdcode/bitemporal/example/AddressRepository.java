@@ -23,20 +23,14 @@ import java.util.Date;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @Named("addressRepository")
 public class AddressRepository {
-
-	private final static Logger logger = LoggerFactory
-			.getLogger(AddressRepository.class);
 
 	@PersistenceContext
 	private EntityManager em;
@@ -70,34 +64,14 @@ public class AddressRepository {
 		return (Address) query.getSingleResult();
 	}
 
-	public Address findByValidity(Date validDate) {
-		try {
-			Query query = em.createQuery("select c from AddressImpl c where "
-					+ "c.validFrom <= :validDate and "
-					+ "c.validTo >= :validDate");
-			query.setParameter("validDate", validDate);
-			Address result = (Address) query.getSingleResult();
-			return result;
-		} catch (NoResultException e) {
-			logger.error("findByPersonIdAndValidity: "
-					+ e.getMessage().toString());
-			return null;
-		}
-	}
-
-	public Address findByPersonIdAndValidity(Long personId, Date validDate) {
-		try {
-			Query query = em.createQuery("select c from AddressImpl c where "
-					+ "c.validFrom <= :validDate and "
-					+ "c.validTo >= :validDate and "
-					+ "c.person.id = :personId");
-			query.setParameter("validDate", validDate);
-			query.setParameter("personId", personId);
-			Address result = (Address) query.getSingleResult();
-			return result;
-		} catch (NoResultException e) {
-			logger.error("findByPersonIdAndValidity: " + e.getMessage());
-			return null;
-		}
+	@SuppressWarnings("unchecked")
+	public Collection<AddressImpl> findByPersonIdAndValidity(Long personId,
+			Date validDate) {
+		Query query = em.createQuery("select c from AddressImpl c where "
+				+ "c.validFrom <= :validDate and " + "c.person.id = :personId");
+		query.setParameter("validDate", validDate);
+		query.setParameter("personId", personId);
+		Collection<AddressImpl> result = query.getResultList();
+		return result;
 	}
 }
