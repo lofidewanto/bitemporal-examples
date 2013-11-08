@@ -53,7 +53,7 @@ public class AddressImpl implements Address, Serializable {
 	@Column(name = "city")
 	private String city;
 
-	@OneToOne(targetEntity = PersonImpl.class)
+	@OneToOne(mappedBy = "address", targetEntity = PersonImpl.class)
 	private Person person;
 
 	@Override

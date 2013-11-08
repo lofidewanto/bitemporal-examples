@@ -31,7 +31,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -65,9 +64,8 @@ public class PersonImpl implements Person, Serializable {
 	@Column(name = "lastname")
 	private String lastname;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
 	@Cascade(value = { CascadeType.ALL })
-	@JoinColumn(name = "person")
 	private final Collection<AddressImpl> addresses = new ArrayList<AddressImpl>();
 
 	@Transient
@@ -95,7 +93,7 @@ public class PersonImpl implements Person, Serializable {
 	}
 
 	@Override
-	public void addAddresses(Address address) {
+	public void addAddress(Address address) {
 		// Add the new address
 		addresses.add((AddressImpl) address);
 	}

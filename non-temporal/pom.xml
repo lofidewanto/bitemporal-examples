@@ -25,9 +25,7 @@
 		<groupId>de.crowdcode.bitemporal.example</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<groupId>de.crowdcode.bitemporal.example</groupId>
 	<artifactId>non-temporal</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>non-temporal</name>
 	<description>Non-temporal Example</description>

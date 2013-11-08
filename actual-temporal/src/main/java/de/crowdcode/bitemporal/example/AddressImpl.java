@@ -25,7 +25,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -62,7 +61,6 @@ public class AddressImpl implements Address, Serializable, Comparable<Address> {
 	private Date validFrom;
 
 	@ManyToOne(targetEntity = PersonImpl.class)
-	@JoinColumn(nullable = true, updatable = false)
 	private Person person;
 
 	@Override
