@@ -25,5 +25,7 @@ All the examples use following implementation basic frameworks:
 * [Hibernate](http://www.hibernate.org): as the implementation of JPA
 * [Maven](http://maven.apache.org): as build system
 
+Our current build status at BuildHive CloudBees: [![Build Status](https://buildhive.cloudbees.com/job/lofidewanto/job/bitemporal-examples/badge/icon)](https://buildhive.cloudbees.com/job/lofidewanto/job/bitemporal-examples/)
+
 Have fun!  
 [Lofi](http://lofidewanto.blogspot.com)
