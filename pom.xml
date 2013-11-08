@@ -29,7 +29,9 @@
 	<!-- Modules -->
 	<!-- =============================================================== -->
 	<modules>
+	    <!-- Outcoment because we don't have DAOFusion libs in Maven Central
 		<module>bitemporal-daofusion</module>
+		-->
 		<module>non-temporal</module>
 		<module>actual-temporal</module>
 		<module>record-temporal-envers</module>
