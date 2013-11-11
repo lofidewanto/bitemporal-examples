@@ -68,28 +68,34 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 
 	@Override
 	public WrappedBitemporalProperty<Address, BitemporalAddressImpl> address() {
-		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(bitemporalAddresses,
+		return new WrappedBitemporalProperty<Address, BitemporalAddressImpl>(
+				bitemporalAddresses,
 				new WrappedValueAccessor<Address, BitemporalAddressImpl>() {
 
 					private static final long serialVersionUID = -3548772720386675459L;
 
 					@Override
-					public BitemporalAddressImpl wrapValue(Address value, Interval validityInterval) {
-						return new BitemporalAddressImpl(value, validityInterval);
+					public BitemporalAddressImpl wrapValue(Address value,
+							Interval validityInterval) {
+						return new BitemporalAddressImpl(value,
+								validityInterval);
 					}
 				});
 	}
 
 	@Override
 	public WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl> alive() {
-		return new WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl>(bitemporalAlives,
+		return new WrappedBitemporalProperty<Boolean, BitemporalBooleanImpl>(
+				bitemporalAlives,
 				new WrappedValueAccessor<Boolean, BitemporalBooleanImpl>() {
 
 					private static final long serialVersionUID = 5959318387062285749L;
 
 					@Override
-					public BitemporalBooleanImpl wrapValue(Boolean value, Interval validityInterval) {
-						return new BitemporalBooleanImpl(value, validityInterval);
+					public BitemporalBooleanImpl wrapValue(Boolean value,
+							Interval validityInterval) {
+						return new BitemporalBooleanImpl(value,
+								validityInterval);
 					}
 				});
 	}
@@ -106,11 +112,12 @@ public class PersonImpl extends MutablePersistentEntity implements Person {
 
 	@Override
 	public Collection<Address> getAddresses() {
-		throw new NotImplementedException("Bitemporal: please use the method address()!");
+		throw new NotImplementedException(
+				"Bitemporal: please use the method address()!");
 	}
 
 	@Override
-	public void addAddresses(Address address) {
+	public void addAddress(Address address) {
 		this.address().set(address);
 	}
 

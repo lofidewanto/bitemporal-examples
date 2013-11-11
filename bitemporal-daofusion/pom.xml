@@ -30,8 +30,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.version>4.10</junit.version>
-		<kissmda.maven.plugin.version>1.1.0</kissmda.maven.plugin.version>
-		<kissmda.cartridges.simple.java.version>1.1.0</kissmda.cartridges.simple.java.version>
+		<kissmda.maven.plugin.version>2.0.0-SNAPSHOT</kissmda.maven.plugin.version>
+		<kissmda.cartridges.simple.java.version>2.0.0-SNAPSHOT</kissmda.cartridges.simple.java.version>
 		<daofusion.version>1.2.0</daofusion.version>
 		<hibernate-core.version>3.3.2.GA</hibernate-core.version>
 		<hibernate-entitymanager.version>3.4.0.GA</hibernate-entitymanager.version>
@@ -295,6 +295,7 @@
 						<transformerScanPackageName>de.crowdcode.kissmda.cartridges</transformerScanPackageName>
 					</transformerScanPackageNames>
 					<modelFile>src/main/resources/model/emf/bitemporal-daofusion.uml</modelFile>
+					<loggingLevel>SEVERE</loggingLevel>
 				</configuration>
 			</plugin>
 			<plugin>
