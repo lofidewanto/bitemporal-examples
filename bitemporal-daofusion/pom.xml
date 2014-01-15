@@ -32,6 +32,7 @@
 		<junit.version>4.10</junit.version>
 		<kissmda.maven.plugin.version>2.0.0</kissmda.maven.plugin.version>
 		<kissmda.cartridges.simple.java.version>2.0.0</kissmda.cartridges.simple.java.version>
+		<kissmda.extensions.importpacker.version>1.0.0</kissmda.extensions.importpacker.version>
 		<daofusion.version>1.2.0</daofusion.version>
 		<hibernate-core.version>3.3.2.GA</hibernate-core.version>
 		<hibernate-entitymanager.version>3.4.0.GA</hibernate-entitymanager.version>
@@ -281,6 +282,11 @@
 						<artifactId>kissmda-cartridges-simple-java</artifactId>
 						<version>${kissmda.cartridges.simple.java.version}</version>
 					</dependency>
+					<dependency>
+						<groupId>de.crowdcode.kissmda.cartridges</groupId>
+						<artifactId>kissmda-extensions-import-packer</artifactId>
+						<version>${kissmda.extensions.importpacker.version}</version>
+					</dependency>
 				</dependencies>
 				<executions>
 					<execution>
@@ -291,9 +297,15 @@
 					</execution>
 				</executions>
 				<configuration>
-					<transformerScanPackageNames>
-						<transformerScanPackageName>de.crowdcode.kissmda.cartridges</transformerScanPackageName>
-					</transformerScanPackageNames>
+					<transformerNameWithOrders>
+						<!-- You put the transformers with order -->
+						<transformerNameWithOrder>
+							1:de.crowdcode.kissmda.extensions.importpacker.ImportPackerTransformer
+						</transformerNameWithOrder>
+						<transformerNameWithOrder>
+							2:de.crowdcode.kissmda.cartridges.simplejava.SimpleJavaTransformer
+						</transformerNameWithOrder>
+					</transformerNameWithOrders>
 					<modelFile>src/main/resources/model/emf/bitemporal-daofusion.uml</modelFile>
 					<loggingLevel>SEVERE</loggingLevel>
 				</configuration>

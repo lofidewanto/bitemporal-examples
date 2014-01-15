@@ -35,6 +35,7 @@
 		<junit.version>4.10</junit.version>
 		<kissmda.maven.plugin.version>2.0.0</kissmda.maven.plugin.version>
 		<kissmda.cartridges.simple.java.version>2.0.0</kissmda.cartridges.simple.java.version>
+		<kissmda.extensions.importpacker.version>1.0.0</kissmda.extensions.importpacker.version>
 		<hibernate-core.version>4.2.1.Final</hibernate-core.version>
 		<hibernate-entitymanager.version>4.2.1.Final</hibernate-entitymanager.version>
 		<hibernate-envers.version>4.2.1.Final</hibernate-envers.version>
@@ -263,6 +264,11 @@
 						<artifactId>kissmda-cartridges-simple-java</artifactId>
 						<version>${kissmda.cartridges.simple.java.version}</version>
 					</dependency>
+					<dependency>
+						<groupId>de.crowdcode.kissmda.cartridges</groupId>
+						<artifactId>kissmda-extensions-import-packer</artifactId>
+						<version>${kissmda.extensions.importpacker.version}</version>
+					</dependency>
 				</dependencies>
 				<executions>
 					<execution>
@@ -273,9 +279,15 @@
 					</execution>
 				</executions>
 				<configuration>
-					<transformerScanPackageNames>
-						<transformerScanPackageName>de.crowdcode.kissmda.cartridges</transformerScanPackageName>
-					</transformerScanPackageNames>
+					<transformerNameWithOrders>
+						<!-- You put the transformers with order -->
+						<transformerNameWithOrder>
+							1:de.crowdcode.kissmda.extensions.importpacker.ImportPackerTransformer
+						</transformerNameWithOrder>
+						<transformerNameWithOrder>
+							2:de.crowdcode.kissmda.cartridges.simplejava.SimpleJavaTransformer
+						</transformerNameWithOrder>
+					</transformerNameWithOrders>
 					<modelFile>src/main/resources/model/emf/non-temporal.uml</modelFile>
 					<loggingLevel>DEBUG</loggingLevel>
 				</configuration>
