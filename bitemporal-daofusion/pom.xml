@@ -31,7 +31,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.version>4.10</junit.version>
 		<kissmda.maven.plugin.version>2.0.0</kissmda.maven.plugin.version>
-		<kissmda.cartridges.simple.java.version>2.0.0</kissmda.cartridges.simple.java.version>
+		<kissmda.cartridges.simple.java.version>2.0.1</kissmda.cartridges.simple.java.version>
 		<kissmda.extensions.importpacker.version>1.0.0</kissmda.extensions.importpacker.version>
 		<daofusion.version>1.2.0</daofusion.version>
 		<hibernate-core.version>3.3.2.GA</hibernate-core.version>
