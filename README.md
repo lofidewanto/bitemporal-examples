@@ -2,7 +2,8 @@ Bitemporal Examples for Java
 ============================
 
 A nice introduction article to Temporality and its patterns:
-* Martin Fowler Temporal Patterns: http://martinfowler.com/eaaDev/timeNarrative.html
+* Martin Fowler "Temporal Patterns": http://martinfowler.com/eaaDev/timeNarrative.html
+* Lofi Dewanto's German article "Temporale Datenhaltung in der Praxis mit Java": http://heise.de/-2100268
 
 Temporal and Bitemporal Examples in Java with OSS Frameworks:
 
