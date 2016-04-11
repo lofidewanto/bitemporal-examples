@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:META-INF/beans.xml" })
-@TransactionConfiguration(defaultRollback = false)
+@TransactionConfiguration(defaultRollback = true)
 @Transactional
 public class PersonTest {
 
@@ -171,7 +171,9 @@ public class PersonTest {
 
 	@Test
 	public void testEmptyAddresses() {
-		// Some address objects because we don't make a rollback
+		// Some address objects: 4 addresses
+		testCreateRecordTemporalAddresses();
+
 		Integer amountOfAddress = addressService.getAmountOfAddress();
 		assertEquals(4, amountOfAddress.intValue());
 	}
